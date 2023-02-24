@@ -10,7 +10,7 @@ public class Instructions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Table(name = "instruction_id")
+    @Column(name = "instruction_id")
     private Long id;
 
     private String stepNumber;
