@@ -19,15 +19,11 @@ public class Recipe {
 
     private String servings;
 
-    private String image;
-
-
-    public Recipe(String name, String description, int cookingTime, String servings, String image) {
+    public Recipe(String name, String description, int cookingTime, String servings) {
         this.name = name;
         this.description = description;
         this.cookingTime = cookingTime;
         this.servings = servings;
-        this.image = image;
     }
 
     public Recipe(){}
@@ -72,11 +68,4 @@ public class Recipe {
         this.servings = servings;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }
