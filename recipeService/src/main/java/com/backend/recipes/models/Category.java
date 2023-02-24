@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +17,7 @@ public class Category {
 
     private String type;
 
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties({"categories"})
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
@@ -23,11 +25,11 @@ public class Category {
             joinColumns = {@JoinColumn(name = "category_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "recipe_id", nullable = false)}
     )
-    private Recipe recipe;
+    private List<Recipe> recipe;
 
-    public Category(String type, Recipe recipe) {
+    public Category(String type) {
         this.type = type;
-        this.recipe = recipe;
+        this.recipe = new ArrayList<Recipe>();
     }
 
     public Long getId() {
@@ -46,11 +48,15 @@ public class Category {
         this.type = type;
     }
 
-    public Recipe getRecipe() {
+    public List<Recipe> getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(List<Recipe> recipe) {
         this.recipe = recipe;
+    }
+
+    public void addRecipe(Recipe recipe){
+        this.recipe.add(recipe);
     }
 }
