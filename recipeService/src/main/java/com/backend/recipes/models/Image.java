@@ -24,6 +24,7 @@ public class Image {
         this.recipe = recipe;
     }
 
+    public Image(){}
     public Long getId() {
         return id;
     }
