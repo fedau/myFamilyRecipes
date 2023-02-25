@@ -1,6 +1,12 @@
 package com.backend.recipes.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "recipes")
@@ -15,15 +21,37 @@ public class Recipe {
 
     private String description;
 
-    private int cookingTime;
+    private String cookingTime;
 
     private String servings;
 
-    public Recipe(String name, String description, int cookingTime, String servings) {
+    @JsonIgnoreProperties({"recipes"})
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "recipe_categories",
+            joinColumns = {@JoinColumn(name = "recipe_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", nullable = false)}
+    )
+    private List<Category> categories;
+    @JsonBackReference
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    private List<Recipe_Ingredient> recipeIngredients;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    private List<Instructions> instructions;
+
+
+
+    public Recipe(String name, String description, String cookingTime, String servings) {
         this.name = name;
         this.description = description;
         this.cookingTime = cookingTime;
         this.servings = servings;
+        this.categories = new ArrayList<Category>();
+        this.recipeIngredients = new ArrayList<Recipe_Ingredient>();
+        this.instructions = new ArrayList<Instructions>();
     }
 
     public Recipe(){}
@@ -52,11 +80,11 @@ public class Recipe {
         this.description = description;
     }
 
-    public int getCookingTime() {
+    public String getCookingTime() {
         return cookingTime;
     }
 
-    public void setCookingTime(int cookingTime) {
+    public void setCookingTime(String cookingTime) {
         this.cookingTime = cookingTime;
     }
 
@@ -68,4 +96,39 @@ public class Recipe {
         this.servings = servings;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category){
+        this.categories.add(category);
+    }
+
+    public List<Recipe_Ingredient> getRecipeIngredients() {
+        return recipeIngredients;
+    }
+
+    public void setRecipeIngredients(List<Recipe_Ingredient> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
+    }
+
+    public void addRecipeIngredient(Recipe_Ingredient recipeIngredient){
+        this.recipeIngredients.add(recipeIngredient);
+    }
+
+    public List<Instructions> getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(List<Instructions> instructions) {
+        this.instructions = instructions;
+    }
+
+    public void addInstructions(Instructions instructions){
+        this.instructions.add(instructions);
+    }
 }
