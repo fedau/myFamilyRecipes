@@ -6,7 +6,7 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "recipe_ingredients")
+@Table(name = "recipeIngredients")
 public class Recipe_Ingredient {
 
     @Id
@@ -17,12 +17,12 @@ public class Recipe_Ingredient {
     private double Quantity;
     private String unit;
 
-    @JsonIgnoreProperties({"recipe_ingredients"})
+    @JsonIgnoreProperties({"recipe_recipeIngredients"})
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    @JsonIgnoreProperties({"recipe_ingredients"})
+    @JsonIgnoreProperties({"recipeIngredient_ingredient"})
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
@@ -34,6 +34,7 @@ public class Recipe_Ingredient {
         this.ingredient = ingredient;
     }
 
+    public Recipe_Ingredient(){}
     public Long getId() {
         return id;
     }
