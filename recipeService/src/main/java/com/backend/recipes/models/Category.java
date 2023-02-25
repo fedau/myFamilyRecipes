@@ -1,5 +1,6 @@
 package com.backend.recipes.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 
@@ -17,11 +18,11 @@ public class Category {
 
     private String type;
 
-    @JsonIgnoreProperties({"categories"})
+    @JsonBackReference
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
-            name = "recipes_catgories",
+            name = "recipe_categories",
             joinColumns = {@JoinColumn(name = "category_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "recipe_id", nullable = false)}
     )
@@ -32,6 +33,7 @@ public class Category {
         this.recipe = new ArrayList<Recipe>();
     }
 
+    public Category(){}
     public Long getId() {
         return id;
     }
