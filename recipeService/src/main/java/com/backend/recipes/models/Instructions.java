@@ -28,6 +28,8 @@ public class Instructions {
         this.recipe = recipe;
     }
 
+    public Instructions(){}
+
     public Long getId() {
         return id;
     }
