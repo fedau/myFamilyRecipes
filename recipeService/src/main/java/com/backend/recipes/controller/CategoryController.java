@@ -19,7 +19,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/categories/{id}")
-    public ResponseEntity getCategoriey(@PathVariable Long id){
+    public ResponseEntity getCategory(@PathVariable Long id){
         return new ResponseEntity<>(categoryRepo.findById(id), HttpStatus.OK);
     }
 

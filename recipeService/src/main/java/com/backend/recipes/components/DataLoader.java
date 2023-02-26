@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoader implements ApplicationRunner {
     @Autowired
-    CategoryRepository categroyRepo;
+    CategoryRepository categoryRepo;
 
     @Autowired
     ImageRepository imageRepo;
@@ -21,7 +21,7 @@ public class DataLoader implements ApplicationRunner {
     InstructionsRepository instructionsRepo;
 
     @Autowired
-    Recipe_IngredientRepository recipe_ingredientRepo;
+    RecipeIngredientRepository recipe_ingredientRepo;
 
     @Autowired
     IngredientRepository ingredientRepo;
@@ -39,6 +39,25 @@ public class DataLoader implements ApplicationRunner {
 
         Recipe flensjes = new Recipe("Pancakes a la oma", "These pancakes are also known as flensjes.", "30mins", "10 pancakes");
         recipeRepo.save(flensjes);
+
+        Recipe ramen = new Recipe("Ramen", "Warm brothy vibes", "15mins", "2");
+        recipeRepo.save(ramen);
+
+        Recipe cereal = new Recipe("Cereal", "sweet cruch", "5 mins", "1");
+        recipeRepo.save(cereal);
+
+        Recipe grapees = new Recipe("Grapes", "just grapes", "1", "1");
+        recipeRepo.save(grapees);
+
+        Ingredient cocopuffs = new Ingredient("CocoPuffs");
+        ingredientRepo.save(cocopuffs);
+        Ingredient broth = new Ingredient("Broth");
+        ingredientRepo.save(broth);
+
+        Ingredient noodles = new Ingredient("Noodles");
+        ingredientRepo.save(noodles);
+        Ingredient grapes = new Ingredient("Grapes");
+        ingredientRepo.save(grapes);
 
         Ingredient flour = new Ingredient("Flour");
         ingredientRepo.save(flour);
@@ -73,47 +92,61 @@ public class DataLoader implements ApplicationRunner {
         Ingredient oil = new Ingredient("oil");
         ingredientRepo.save(oil);
 
-        Recipe_Ingredient waffleFlour = new Recipe_Ingredient(1, "kg", waffles, selfrisingFlour);
+        RecipeIngredient grapess = new RecipeIngredient(1, "grape", grapees, grapes);
+        recipe_ingredientRepo.save(grapess);
+
+        RecipeIngredient ramennood = new RecipeIngredient(100, "grams", ramen, noodles);
+        recipe_ingredientRepo.save(ramennood);
+
+        RecipeIngredient ramebroth = new RecipeIngredient(200, "ml", ramen, broth);
+        recipe_ingredientRepo.save(ramebroth);
+
+        RecipeIngredient cerealstuff = new RecipeIngredient(100, "grams", cereal, cocopuffs);
+        recipe_ingredientRepo.save(cerealstuff);
+
+
+
+        RecipeIngredient waffleFlour = new RecipeIngredient(1, "kg", waffles, selfrisingFlour);
         recipe_ingredientRepo.save(waffleFlour);
 
-        Recipe_Ingredient waffleSugar = new Recipe_Ingredient(600, "grams", waffles, sugar);
+        RecipeIngredient waffleSugar = new RecipeIngredient(600, "grams", waffles, sugar);
         recipe_ingredientRepo.save(waffleSugar);
 
-        Recipe_Ingredient waffleEggs = new Recipe_Ingredient(6, "eggs", waffles, eggs);
+        RecipeIngredient waffleEggs = new RecipeIngredient(6, "eggs", waffles, eggs);
         recipe_ingredientRepo.save(waffleEggs);
 
-        Recipe_Ingredient waffleMilk = new Recipe_Ingredient(150, "ml", waffles, milk);
+        RecipeIngredient waffleMilk = new RecipeIngredient(150, "ml", waffles, milk);
         recipe_ingredientRepo.save(waffleMilk);
 
-        Recipe_Ingredient waffleButter = new Recipe_Ingredient(500, "grams", waffles, butter);
+        RecipeIngredient waffleButter = new RecipeIngredient(500, "grams", waffles, butter);
         recipe_ingredientRepo.save(waffleButter);
 
-        Recipe_Ingredient waffleVanillaS = new Recipe_Ingredient(16, "grams", waffles, vanillaSugar);
+        RecipeIngredient waffleVanillaS = new RecipeIngredient(16, "grams", waffles, vanillaSugar);
         recipe_ingredientRepo.save(waffleVanillaS);
 
-        Recipe_Ingredient waffleCustard = new Recipe_Ingredient(25, "grams", waffles, custardMix);
+        RecipeIngredient waffleCustard = new RecipeIngredient(25, "grams", waffles, custardMix);
         recipe_ingredientRepo.save(waffleCustard);
 
-        Recipe_Ingredient waffleCinnamon = new Recipe_Ingredient(1, "tablespoon", waffles, cinnamon);
+        RecipeIngredient waffleCinnamon = new RecipeIngredient(1, "tablespoon", waffles, cinnamon);
         recipe_ingredientRepo.save(waffleCinnamon);
 
 
 
-        Recipe_Ingredient pancakeFlour = new Recipe_Ingredient(250, "grams", flensjes, selfrisingFlour );
+        RecipeIngredient pancakeFlour = new RecipeIngredient(250, "grams", flensjes, selfrisingFlour );
         recipe_ingredientRepo.save(pancakeFlour);
-        Recipe_Ingredient pancakeSugar = new Recipe_Ingredient(70, "grams", flensjes, sugar);
+        RecipeIngredient pancakeSugar = new RecipeIngredient(70, "grams", flensjes, sugar);
         recipe_ingredientRepo.save(pancakeSugar);
 
-        Recipe_Ingredient pancakeEggs = new Recipe_Ingredient(4, "eggs", flensjes, eggs);
+        RecipeIngredient pancakeEggs = new RecipeIngredient(4, "eggs", flensjes, eggs);
         recipe_ingredientRepo.save(pancakeEggs);
 
-        Recipe_Ingredient pancakeMilk = new Recipe_Ingredient(500, "ml", flensjes, milk);
+        RecipeIngredient pancakeMilk = new RecipeIngredient(500, "ml", flensjes, milk);
         recipe_ingredientRepo.save(pancakeMilk);
 
-        Recipe_Ingredient pancakeButter = new Recipe_Ingredient(20, "grams", flensjes, butter);
+        RecipeIngredient pancakeButter = new RecipeIngredient(20, "grams", flensjes, butter);
         recipe_ingredientRepo.save(pancakeButter);
 
-        Recipe_Ingredient pancakeOil = new Recipe_Ingredient(20, "ml", flensjes, oil);
+        RecipeIngredient pancakeOil = new RecipeIngredient(20, "ml", flensjes, oil);
         recipe_ingredientRepo.save(pancakeOil);
 
         Instructions waffleInstr1 = new Instructions("Step 1", "Mix eggs, butter, sugar, vanilla sugar, cinnamon and milk. Unill combined well. ", waffles);
@@ -135,14 +168,52 @@ public class DataLoader implements ApplicationRunner {
         Instructions pancake3 = new Instructions("step 3", "Heat a pan and wait untill hot. Add some oil and let this get warm. Now add some batter and start frying the pancakes.", flensjes);
         instructionsRepo.save(pancake3);
 
+
+        Instructions grapeinstruc = new Instructions("step 1", "get a grape", grapees);
+        instructionsRepo.save(grapeinstruc);
+
+
+        Instructions ceraealinst = new Instructions("step 1", "make your cereeal", cereal);
+        instructionsRepo.save(ceraealinst);
+
+
+        Instructions rameninst1 = new Instructions("step 1", "boil the noodles in the broth", ramen);
+        instructionsRepo.save(rameninst1);
+
+        Instructions rameninst2 = new Instructions("step 2", "eat it", ramen);
+        instructionsRepo.save(rameninst2);
+
+
         Category dessert = new Category("dessert");
-        categroyRepo.save(dessert);
+        categoryRepo.save(dessert);
 
         Category family = new Category("family");
-        categroyRepo.save(family);
+        categoryRepo.save(family);
 
-        Category quick = new Category("quick qnd easy");
-        categroyRepo.save(quick);
+        Category quick = new Category("quick");
+        categoryRepo.save(quick);
+
+        Category breakfast = new Category("breakfast");
+        categoryRepo.save(breakfast);
+
+        Category healthy = new Category("healthy");
+        categoryRepo.save(healthy);
+
+        Category vegetarian = new Category("vegetarian");
+        categoryRepo.save(vegetarian);
+
+
+        grapees.addCategory(healthy);
+        grapees.addCategory(quick);
+        recipeRepo.save(grapees);
+
+
+        ramen.addCategory(vegetarian);
+        ramen.addCategory(quick);
+        recipeRepo.save(ramen);
+
+        cereal.addCategory(breakfast);
+        recipeRepo.save(cereal);
 
         waffles.addCategory(dessert);
         waffles.addCategory(family);

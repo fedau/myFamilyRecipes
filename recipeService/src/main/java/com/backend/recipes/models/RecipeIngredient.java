@@ -1,40 +1,55 @@
 package com.backend.recipes.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "recipeIngredients")
-public class Recipe_Ingredient {
+public class RecipeIngredient {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "recipe_ingredient_id")
+    @Column(name = "recipeIngredient_id")
     private Long id;
 
     private double Quantity;
     private String unit;
 
-    @JsonIgnoreProperties({"recipe_recipeIngredients"})
+//    @JsonIgnoreProperties({"recipeIngredients"})
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    @JsonIgnoreProperties({"recipeIngredient_ingredient"})
+//    @JsonIgnoreProperties({"recipeIngredients"})
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
-    public Recipe_Ingredient(double quantity, String unit, Recipe recipe, Ingredient ingredient) {
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @MapsId("recipeId")
+//    @JoinColumn(name = "recipe_id")
+//    @JsonBackReference
+//    private Recipe recipe;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @MapsId("ingredientId")
+//    @JoinColumn(name = "ingredient_id")
+//    @JsonIgnoreProperties("recipeIngredients")
+//    private Ingredient ingredient;
+
+    public RecipeIngredient(double quantity, String unit, Recipe recipe, Ingredient ingredient) {
         Quantity = quantity;
         this.unit = unit;
         this.recipe = recipe;
         this.ingredient = ingredient;
     }
 
-    public Recipe_Ingredient(){}
+    public RecipeIngredient(){}
     public Long getId() {
         return id;
     }

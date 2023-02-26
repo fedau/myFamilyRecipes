@@ -1,3 +1,4 @@
+
 package com.backend.recipes.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,16 +16,15 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private Long id;
 
-    @JsonIgnoreProperties({"recipeIngredient_ingredient"})
+    @JsonIgnoreProperties({"ingredient"})
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-    private List<Recipe_Ingredient> recipeIngredient;
-
+    private List<RecipeIngredient> recipeIngredients;
 
     private String name;
 
     public Ingredient(String name) {
         this.name = name;
-        this.recipeIngredient = new ArrayList<Recipe_Ingredient>();
+        this.recipeIngredients = new ArrayList<RecipeIngredient>();
     }
 
     public Ingredient(){}
@@ -45,15 +45,15 @@ public class Ingredient {
         this.name = name;
     }
 
-    public List<Recipe_Ingredient> getRecipeIngredient() {
-        return recipeIngredient;
+    public List<RecipeIngredient> getRecipeIngredient() {
+        return recipeIngredients;
     }
 
-    public void setRecipeIngredient(List<Recipe_Ingredient> recipeIngredient) {
-        this.recipeIngredient = recipeIngredient;
+    public void setRecipeIngredient(List<RecipeIngredient> recipeIngredient) {
+        this.recipeIngredients = recipeIngredient;
     }
 
-    public void addRecipeIngredient(Recipe_Ingredient recipeIngredient){
-        this.recipeIngredient.add(recipeIngredient);
+    public void addRecipeIngredient(RecipeIngredient recipeIngredient){
+        this.recipeIngredients.add(recipeIngredient);
     }
 }

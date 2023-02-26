@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface InstructionsRepository extends JpaRepository<Instructions, Long> {
 
-    List<Recipe> findByRecipeId(Long id);
+//    List<Recipe> findByRecipeId(Long id);
 }

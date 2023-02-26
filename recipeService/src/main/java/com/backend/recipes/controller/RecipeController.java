@@ -1,22 +1,31 @@
 package com.backend.recipes.controller;
 
 import com.backend.recipes.models.Recipe;
-import com.backend.recipes.models.Recipe_Ingredient;
 import com.backend.recipes.repository.RecipeRepository;
-import com.backend.recipes.repository.Recipe_IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 public class RecipeController {
     @Autowired
     RecipeRepository recipeRepo;
 
     @GetMapping(value = "/recipes")
-    public ResponseEntity<List<Recipe>> getAllRecipes(){
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam Optional<String> categoryType, @RequestParam Optional<String> name, @RequestParam Optional<String> ingredient){
+        if(categoryType.isPresent()){
+            return new ResponseEntity<>(recipeRepo.findByCategoriesType(categoryType.get()), HttpStatus.OK);
+        }
+        if(name.isPresent()){
+            return new ResponseEntity<>(recipeRepo.findByName(name.get()), HttpStatus.OK);
+        }
+        if(ingredient.isPresent()){
+            return new ResponseEntity<>(recipeRepo.findByRecipeIngredientsIngredient(ingredient.get()), HttpStatus.OK);
+        }
         return new ResponseEntity<>(recipeRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/recipes/{id}")

@@ -2,6 +2,7 @@ package com.backend.recipes.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -34,11 +35,17 @@ public class Recipe {
             inverseJoinColumns = {@JoinColumn(name = "category_id", nullable = false)}
     )
     private List<Category> categories;
-    @JsonBackReference
+    @JsonIgnoreProperties({"recipes"})
+//    @JsonBackReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
-    private List<Recipe_Ingredient> recipeIngredients;
+    private List<RecipeIngredient> recipeIngredients;
 
-    @JsonBackReference
+//    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonManagedReference
+//    private List<RecipeIngredient> recipeIngredients;
+
+    @JsonIgnoreProperties({"recipe"})
+//    @JsonBackReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     private List<Instructions> instructions;
 
@@ -50,7 +57,7 @@ public class Recipe {
         this.cookingTime = cookingTime;
         this.servings = servings;
         this.categories = new ArrayList<Category>();
-        this.recipeIngredients = new ArrayList<Recipe_Ingredient>();
+        this.recipeIngredients = new ArrayList<RecipeIngredient>();
         this.instructions = new ArrayList<Instructions>();
     }
 
@@ -108,15 +115,15 @@ public class Recipe {
         this.categories.add(category);
     }
 
-    public List<Recipe_Ingredient> getRecipeIngredients() {
+    public List<RecipeIngredient> getRecipeIngredients() {
         return recipeIngredients;
     }
 
-    public void setRecipeIngredients(List<Recipe_Ingredient> recipeIngredients) {
+    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
 
-    public void addRecipeIngredient(Recipe_Ingredient recipeIngredient){
+    public void addRecipeIngredient(RecipeIngredient recipeIngredient){
         this.recipeIngredients.add(recipeIngredient);
     }
 
