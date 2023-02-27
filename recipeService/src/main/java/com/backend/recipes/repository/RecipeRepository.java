@@ -12,9 +12,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 
     List<Recipe> findByCategoriesType(String categoryType);
-    List<Recipe> findByName(String name);
+    List<Recipe> findByNameContainingIgnoreCase(String name);
 
-    List<Recipe> findByRecipeIngredientsIngredient(String ingredient);
+//    List<Recipe> findByRecipeIngredientsIngredient(String ingredient);
 
 
 }

@@ -16,16 +16,16 @@ public class RecipeController {
     RecipeRepository recipeRepo;
 
     @GetMapping(value = "/recipes")
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam Optional<String> categoryType, @RequestParam Optional<String> name, @RequestParam Optional<String> ingredient){
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam Optional<String> categoryType, @RequestParam Optional<String> name){
         if(categoryType.isPresent()){
             return new ResponseEntity<>(recipeRepo.findByCategoriesType(categoryType.get()), HttpStatus.OK);
         }
         if(name.isPresent()){
-            return new ResponseEntity<>(recipeRepo.findByName(name.get()), HttpStatus.OK);
+            return new ResponseEntity<>(recipeRepo.findByNameContainingIgnoreCase(name.get()), HttpStatus.OK);
         }
-        if(ingredient.isPresent()){
-            return new ResponseEntity<>(recipeRepo.findByRecipeIngredientsIngredient(ingredient.get()), HttpStatus.OK);
-        }
+//        if(ingredient.isPresent()){
+//            return new ResponseEntity<>(recipeRepo.findByRecipeIngredientsIngredient(ingredient.get()), HttpStatus.OK);
+//        }
         return new ResponseEntity<>(recipeRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/recipes/{id}")
