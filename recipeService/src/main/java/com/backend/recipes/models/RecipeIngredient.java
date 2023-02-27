@@ -29,19 +29,6 @@ public class RecipeIngredient {
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @MapsId("recipeId")
-//    @JoinColumn(name = "recipe_id")
-//    @JsonBackReference
-//    private Recipe recipe;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @MapsId("ingredientId")
-//    @JoinColumn(name = "ingredient_id")
-//    @JsonIgnoreProperties("recipeIngredients")
-//    private Ingredient ingredient;
-
     public RecipeIngredient(double quantity, String unit, Recipe recipe, Ingredient ingredient) {
         Quantity = quantity;
         this.unit = unit;
