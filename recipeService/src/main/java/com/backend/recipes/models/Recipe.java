@@ -22,9 +22,11 @@ public class Recipe {
 
     private String description;
 
-    private String cookingTime;
+    private int cookingTime;
 
-    private String servings;
+    private int servings;
+
+    private String image;
 
     @JsonIgnoreProperties({"recipes"})
     @ManyToMany
@@ -35,23 +37,25 @@ public class Recipe {
             inverseJoinColumns = {@JoinColumn(name = "category_id", nullable = false)}
     )
     private List<Category> categories;
-    @JsonIgnoreProperties({"recipes"})
+//    @JsonIgnoreProperties({"recipes"})
 //    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     private List<RecipeIngredient> recipeIngredients;
 
-//    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<RecipeIngredient> recipeIngredients;
 
     @JsonIgnoreProperties({"recipe"})
 //    @JsonBackReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     private List<Instructions> instructions;
 
+//    @JsonIgnoreProperties({"recipe"})
+//    @OneToOne
+//    @JoinColumn(name = "image_id", nullable = true)
+//    private Image image;
 
 
-    public Recipe(String name, String description, String cookingTime, String servings) {
+    public Recipe(String name, String description, int cookingTime, int servings ){
         this.name = name;
         this.description = description;
         this.cookingTime = cookingTime;
@@ -59,6 +63,7 @@ public class Recipe {
         this.categories = new ArrayList<Category>();
         this.recipeIngredients = new ArrayList<RecipeIngredient>();
         this.instructions = new ArrayList<Instructions>();
+        this.image = "https://images.pexels.com/photos/4109465/pexels-photo-4109465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
     }
 
     public Recipe(){}
@@ -87,19 +92,19 @@ public class Recipe {
         this.description = description;
     }
 
-    public String getCookingTime() {
+    public int getCookingTime() {
         return cookingTime;
     }
 
-    public void setCookingTime(String cookingTime) {
+    public void setCookingTime(int cookingTime) {
         this.cookingTime = cookingTime;
     }
 
-    public String getServings() {
+    public int getServings() {
         return servings;
     }
 
-    public void setServings(String servings) {
+    public void setServings(int servings) {
         this.servings = servings;
     }
 
@@ -137,5 +142,13 @@ public class Recipe {
 
     public void addInstructions(Instructions instructions){
         this.instructions.add(instructions);
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
