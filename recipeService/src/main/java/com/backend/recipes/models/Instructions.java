@@ -14,7 +14,7 @@ public class Instructions {
     @Column(name = "instruction_id")
     private Long id;
 
-    private String stepNumber;
+    private int stepNumber;
 
     private String Description;
 
@@ -24,7 +24,7 @@ public class Instructions {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    public Instructions(String stepNumber, String description, Recipe recipe) {
+    public Instructions(int stepNumber, String description, Recipe recipe) {
         this.stepNumber = stepNumber;
         Description = description;
         this.recipe = recipe;
@@ -40,11 +40,11 @@ public class Instructions {
         this.id = id;
     }
 
-    public String getStepNumber() {
+    public int getStepNumber() {
         return stepNumber;
     }
 
-    public void setStepNumber(String stepNumber) {
+    public void setStepNumber(int stepNumber) {
         this.stepNumber = stepNumber;
     }
 
