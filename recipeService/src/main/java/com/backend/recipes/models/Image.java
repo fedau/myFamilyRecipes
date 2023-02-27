@@ -14,9 +14,9 @@ public class Image {
     private Long id;
     private String image;
 
-//    @JsonIgnoreProperties({"images"})
+//    @JsonIgnoreProperties({"image"})
 //    @OneToOne
-//    @JoinColumn(name = "recipe_id", nullable = false)
+//    @JoinColumn(name = "recipe_id", nullable = true)
 //    private Recipe recipe;
 
     public Image(String image, Recipe recipe) {

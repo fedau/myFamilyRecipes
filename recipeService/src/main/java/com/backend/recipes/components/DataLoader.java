@@ -34,19 +34,19 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public  void run(ApplicationArguments args){
-        Recipe waffles = new Recipe("Waffles a la oma", "Little Waffles made to keep for a while.", "1 hour", "90 small waffles");
+        Recipe waffles = new Recipe("Waffles a la oma", "Little Waffles made to keep for a while.", 60, 50);
         recipeRepo.save(waffles);
 
-        Recipe flensjes = new Recipe("Pancakes a la oma", "These pancakes are also known as flensjes.", "30mins", "10 pancakes");
+        Recipe flensjes = new Recipe("Pancakes a la oma", "These pancakes are also known as flensjes.", 30, 10);
         recipeRepo.save(flensjes);
 
-        Recipe ramen = new Recipe("Ramen", "Warm brothy vibes", "15mins", "2");
+        Recipe ramen = new Recipe("Ramen", "Warm brothy vibes", 15, 2);
         recipeRepo.save(ramen);
 
-        Recipe cereal = new Recipe("Cereal", "sweet cruch", "5 mins", "1");
+        Recipe cereal = new Recipe("Cereal", "sweet cruch", 5, 1);
         recipeRepo.save(cereal);
 
-        Recipe grapees = new Recipe("Grapes", "just grapes", "1", "1");
+        Recipe grapees = new Recipe("Grapes", "just grapes", 1, 1);
         recipeRepo.save(grapees);
 
         Ingredient cocopuffs = new Ingredient("CocoPuffs");
@@ -149,38 +149,38 @@ public class DataLoader implements ApplicationRunner {
         RecipeIngredient pancakeOil = new RecipeIngredient(20, "ml", flensjes, oil);
         recipe_ingredientRepo.save(pancakeOil);
 
-        Instructions waffleInstr1 = new Instructions("Step 1", "Mix eggs, butter, sugar, vanilla sugar, cinnamon and milk. Unill combined well. ", waffles);
+        Instructions waffleInstr1 = new Instructions(1, "Mix eggs, butter, sugar, vanilla sugar, cinnamon and milk. Unill combined well. ", waffles);
         instructionsRepo.save(waffleInstr1);
-        Instructions waffleInstr2 = new Instructions("Step 2", "Add the self-rising flour and the custard powder", waffles);
+        Instructions waffleInstr2 = new Instructions(2, "Add the self-rising flour and the custard powder", waffles);
         instructionsRepo.save(waffleInstr2);
-        Instructions waffleInstr3 = new Instructions("Step 3", "Depending on the consistency sprea or roll the dough out on the table. Make small rolls if possible rouglhy 90 rolls. For small waffles. If dough is sticky use 2 spoons to transfer to the iron. ", waffles);
+        Instructions waffleInstr3 = new Instructions(3, "Depending on the consistency sprea or roll the dough out on the table. Make small rolls if possible rouglhy 90 rolls. For small waffles. If dough is sticky use 2 spoons to transfer to the iron. ", waffles);
         instructionsRepo.save(waffleInstr3);
 
-        Instructions waffleInstr4 = new Instructions("Step 4", "Bake waffles in hot iron until borders get brown. Keep the waffles in an iron box. ", waffles);
+        Instructions waffleInstr4 = new Instructions(4, "Bake waffles in hot iron until borders get brown. Keep the waffles in an iron box. ", waffles);
         instructionsRepo.save(waffleInstr4);
 
-        Instructions pancake1 = new Instructions("step 1", "Add the flour and sugar together in a bowl. Make a well and add the eggs and beat them", flensjes);
+        Instructions pancake1 = new Instructions(1, "Add the flour and sugar together in a bowl. Make a well and add the eggs and beat them", flensjes);
         instructionsRepo.save(pancake1);
 
-        Instructions pancake2 = new Instructions("step 2", "Whilst whisking slowly add the milk. Then the oil. Melt the butter and add to the mix. ", flensjes);
+        Instructions pancake2 = new Instructions(2, "Whilst whisking slowly add the milk. Then the oil. Melt the butter and add to the mix. ", flensjes);
         instructionsRepo.save(pancake2);
 
-        Instructions pancake3 = new Instructions("step 3", "Heat a pan and wait untill hot. Add some oil and let this get warm. Now add some batter and start frying the pancakes.", flensjes);
+        Instructions pancake3 = new Instructions(3, "Heat a pan and wait untill hot. Add some oil and let this get warm. Now add some batter and start frying the pancakes.", flensjes);
         instructionsRepo.save(pancake3);
 
 
-        Instructions grapeinstruc = new Instructions("step 1", "get a grape", grapees);
+        Instructions grapeinstruc = new Instructions(1, "get a grape", grapees);
         instructionsRepo.save(grapeinstruc);
 
 
-        Instructions ceraealinst = new Instructions("step 1", "make your cereeal", cereal);
+        Instructions ceraealinst = new Instructions(1, "make your cereeal", cereal);
         instructionsRepo.save(ceraealinst);
 
 
-        Instructions rameninst1 = new Instructions("step 1", "boil the noodles in the broth", ramen);
+        Instructions rameninst1 = new Instructions(1, "boil the noodles in the broth", ramen);
         instructionsRepo.save(rameninst1);
 
-        Instructions rameninst2 = new Instructions("step 2", "eat it", ramen);
+        Instructions rameninst2 = new Instructions(2, "eat it", ramen);
         instructionsRepo.save(rameninst2);
 
 
@@ -202,6 +202,8 @@ public class DataLoader implements ApplicationRunner {
         Category vegetarian = new Category("vegetarian");
         categoryRepo.save(vegetarian);
 
+//        Image forWaffle = new Image("https://images.pexels.com/photos/4109465/pexels-photo-4109465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", waffles);
+//        imageRepo.save(forWaffle);
 
         grapees.addCategory(healthy);
         grapees.addCategory(quick);
