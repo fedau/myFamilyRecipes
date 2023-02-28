@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class RecipeIngredientController {
@@ -16,7 +17,10 @@ public class RecipeIngredientController {
     RecipeIngredientRepository recipe_ingredientRepo;
 
     @GetMapping(value = "/recipeIngredients")
-    public ResponseEntity<List<RecipeIngredient>> getAllRecipeIngredients(){
+    public ResponseEntity<List<RecipeIngredient>> getAllRecipeIngredients(@RequestParam Optional<Long> recipeId)
+    {if(recipeId.isPresent()){
+        return new ResponseEntity<>(recipe_ingredientRepo.findByRecipeId(recipeId.get()), HttpStatus.OK);
+    }
         return new ResponseEntity<>(recipe_ingredientRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/recipeIngredients/{id}")

@@ -17,14 +17,14 @@ public class RecipeIngredient {
     private double Quantity;
     private String unit;
 
-//    @JsonIgnoreProperties({"recipeIngredients"})
-    @JsonBackReference
+    @JsonIgnoreProperties({"recipeIngredients"})
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-//    @JsonIgnoreProperties({"recipeIngredients"})
-    @JsonBackReference
+    @JsonIgnoreProperties({"recipeIngredient"})
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
