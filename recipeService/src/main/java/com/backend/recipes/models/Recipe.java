@@ -37,9 +37,9 @@ public class Recipe {
             inverseJoinColumns = {@JoinColumn(name = "category_id", nullable = false)}
     )
     private List<Category> categories;
-//    @JsonIgnoreProperties({"recipes"})
-//    @JsonBackReference
-    @JsonManagedReference
+    @JsonIgnoreProperties({"recipes"})
+    @JsonBackReference
+//    @JsonManagedReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
     private List<RecipeIngredient> recipeIngredients;
 

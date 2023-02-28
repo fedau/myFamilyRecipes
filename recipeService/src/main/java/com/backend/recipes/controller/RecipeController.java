@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @RestController
 public class RecipeController {
@@ -16,10 +17,13 @@ public class RecipeController {
     RecipeRepository recipeRepo;
 
     @GetMapping(value = "/recipes")
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam Optional<String> categoryType, @RequestParam Optional<String> name){
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam Optional<String> categoryType,
+                                                      @RequestParam Optional<String> name,
+                                                      @RequestParam Optional<Long> id){
         if(categoryType.isPresent()){
             return new ResponseEntity<>(recipeRepo.findByCategoriesType(categoryType.get()), HttpStatus.OK);
         }
+
         if(name.isPresent()){
             return new ResponseEntity<>(recipeRepo.findByNameContainingIgnoreCase(name.get()), HttpStatus.OK);
         }

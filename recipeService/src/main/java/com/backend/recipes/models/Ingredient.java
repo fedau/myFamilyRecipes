@@ -1,7 +1,9 @@
 
 package com.backend.recipes.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class Ingredient {
     private Long id;
 
     @JsonIgnoreProperties({"ingredient"})
+//    @JsonManagedReference
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     private List<RecipeIngredient> recipeIngredients;
 
