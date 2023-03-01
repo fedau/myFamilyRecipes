@@ -1,20 +1,18 @@
 import {useEffect, useState} from 'react'
-import { Route, Router, Routes, useParams } from 'react-router-dom'
-import RecipeList from '../components/RecipeList'
+import { Route, Routes, useParams } from 'react-router-dom'
 import Request from '../helpers/request'
 import AddRecipe from './AddRecipe'
 import Favourites from './Favourites'
 import Homep from './Homep'
-import { RecipeData } from '../interfaces'
-import Recipe from '../components/Recipe'
 import RecipeDetail from '../components/RecipeDetail'
 
 const RecipeContainer = () => {
+    // states for all the api calls
 
     const [ recipes, setRecipes] = useState([]);
     const [ ingredients, setIngredients] = useState([])
     const [ instructions, setInstructions] = useState([])
-    const [recipe_ingredients, setRecipeIngredients] = useState([])
+    const [recipeIngredients, setRecipeIngredients] = useState([])
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
@@ -29,44 +27,43 @@ const RecipeContainer = () => {
         .then((data) => {
             setRecipes(data[0])
             setIngredients(data[1])
-            setRecipeIngredients(data[2])
-            setInstructions(data[3])
+            setInstructions(data[2])
+            setRecipeIngredients(data[3])
             setCategories(data[4])
         })
     }, [])
-    
+  
+// this wrapper for a single recipe. Takes the id out of the url and puts the id on the single recipe
+const RecipeDetailWrapper = () => {
+  const { id } = useParams();
+  const foundRecipe = recipes.find((recipe) => recipe.id === parseInt(id));
+  return <RecipeDetail recipe={foundRecipe} />; 
+};
 
-    const findRecipeById = (id) => {
-        return recipes.find((recipe) => {
-          return recipe.id === parseInt(id);
-        })
-      }
-    
-      const RecipeDetailWrapper = () => {
-        const { id } = useParams();
-        let foundRecipe = findRecipeById(id)
-        // let foundRecipeIngredient = findByRecipeId(id)
+//   FORM SUBMIT
+const handleRecipeSubmit = (recipe) => {
+    const request = new Request();
+    request.post('/api/recipes', recipe)
+    .then(() => {
+        window.location = '/'
+    })
+}
+      
 
-    
-        return <RecipeDetail recipe={foundRecipe} />;
-      };
-    
-
-  return (
-    <>
+      return (
+          <>
 
     <Routes>
         <Route path='/' element={<Homep recipes={recipes}/>}/>
         <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
-        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories}/>}/>
+        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} handleRecipeSubmit={handleRecipeSubmit}/>}/>
         <Route path="/recipes/:id" element={<RecipeDetailWrapper />} />
 
 
     </Routes>
-{/* do not put any text here or it loads everywhere */}
-
     </>
   )
-}
+  
+};
 
 export default RecipeContainer
