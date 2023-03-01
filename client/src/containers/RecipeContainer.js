@@ -41,9 +41,10 @@ const RecipeDetailWrapper = () => {
 };
 
 //   FORM SUBMIT
-const handleRecipeSubmit = (recipe) => {
+const handleRecipeSubmit = (recipe, instructions) => {
     const request = new Request();
     request.post('/api/recipes', recipe)
+    .then( () => request.post('/api/instructions', instructions))
     .then(() => {
         window.location = '/'
     })
@@ -56,7 +57,7 @@ const handleRecipeSubmit = (recipe) => {
     <Routes>
         <Route path='/' element={<Homep recipes={recipes}/>}/>
         <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
-        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} handleRecipeSubmit={handleRecipeSubmit}/>}/>
+        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredients={ingredients} handleRecipeSubmit={handleRecipeSubmit}/>}/>
         <Route path="/recipes/:id" element={<RecipeDetailWrapper />} />
 
 
