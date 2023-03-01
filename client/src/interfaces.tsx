@@ -17,7 +17,7 @@ export interface RecipeData{
     instructions:{
         id: number,
         stepNumber: number,
-        description: string,
+        stepDescription: string,
     }[],
 }
 
@@ -29,7 +29,7 @@ export interface CategoriesData{
 
  export interface RecipeIngredient {
     id: number;
-    name: string;
+    ingredientName: string;
   }
 
 
