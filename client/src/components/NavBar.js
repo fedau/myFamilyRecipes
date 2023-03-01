@@ -27,17 +27,16 @@ const AnotherBar = () => {
       <RouterNavLink to="/" exact> <img src={logo} alt='logo' /> </RouterNavLink>
 
                 <RouterNavLink
-                  // tag={RouterNavLink}
                   to="/"
                   exact
                   className="Magnet"
                 >
                   Recipes
                 </RouterNavLink>
-                {/* <RouterNavLink to="/recipes" className='Magnet'>Recipes</RouterNavLink> */}
+
 
               
-              
+           {/* If not authenticated display log in button */}
             {!isAuthenticated && (
              
                   <button
@@ -49,6 +48,7 @@ const AnotherBar = () => {
 
          
             )}
+            {/* if logged in display add / favourites and log out buttons */}
             {isAuthenticated && (
               <div className="logProfile">
                 <RouterNavLink  className="Magnet"  to="/add" >

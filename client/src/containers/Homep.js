@@ -3,7 +3,7 @@ import Recipe from '../components/Recipe'
 
 const Homep = ({recipes}) => {
     if(recipes.length === 0){
-        return (<p>Loading...</p>)
+        return (<p>Loading all the recipes...</p>)
     }
 
         const recipeElements = recipes.map((recipe, index) => {
