@@ -4,19 +4,39 @@
 // import { RecipeData } from '../interfaces';
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { RecipeData } from '../interfaces';
+import {useEffect, useState} from 'react'
+import { RecipeIngredientQuantity,  RecipeData } from '../interfaces';
 
-const RecipeDetail = ({ recipe }: { recipe: RecipeData }) => {
+const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
 
+// state for recipeIngredient and fetch request to find ingredients linked to recipe Id
+  const [recipeIngredients , setRecipeIngredientsRecipeId] = useState([] as RecipeIngredientQuantity[])
+  const findRecipeById = () => {
+    fetch(`/api/recipeIngredients?recipeId=${recipe.id}`)
+      .then(response => response.json())
+      .then((data) => {
+        console.log(data);
+        setRecipeIngredientsRecipeId(data)
+    }
+      )
+      .catch(error => console.log(error));
+
+
+  };
+
+  useEffect(() => {
+    findRecipeById();
+  }, [])
+  
+  // when database is loading
   if(!recipe){
-    return "still loading"
+    return "waiting on the recipe"
 }
-const url ="/recipes/" + recipe.id;
 
+// Recipe
   return (
-    <div>
-      <img src={recipe.image} alt="error no picture" style={{ width: 500, height: 600 }} />
+    <>
+      <img src={recipe.image} alt="error no pic" style={{ width: 500, height: 600 }} />
       <h1> {recipe.name}</h1>
       <br/> {recipe.description} 
       <br />
@@ -27,14 +47,32 @@ const url ="/recipes/" + recipe.id;
           {category.type}
           </div>
           ))}
-          {/* {recipe.recipeIngredients.map((recIngredient) =>(
-            <div key={recIngredient.id}>
-              {recIngredient.quantity}
-              {recIngredient.unit}
 
-            </div>
-          ))} */}
-    </div>
+       {recipe.instructions.map((instruction) => (
+        <div key={instruction.id}>
+          {instruction.stepNumber}
+          <br/>
+          {instruction.description}
+
+          </div>
+          ))}
+
+   <div>
+      {recipeIngredients.map((RecipeIngredientQuantity) =>(
+        <ul key={RecipeIngredientQuantity.id}> 
+        
+          <li>
+            {RecipeIngredientQuantity.quantity} 
+          {RecipeIngredientQuantity.unit}
+          {RecipeIngredientQuantity.ingredient.name} 
+            </li>
+        </ul>
+      ))}
+    </div> 
+
+
+
+    </>
   );
 };
 
