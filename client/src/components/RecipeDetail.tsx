@@ -15,7 +15,6 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
     fetch(`/api/recipeIngredients?recipeId=${recipe.id}`)
       .then(response => response.json())
       .then((data) => {
-        console.log(data);
         setRecipeIngredientsRecipeId(data)
     }
       )
@@ -52,7 +51,7 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
         <div key={instruction.id}>
           {instruction.stepNumber}
           <br/>
-          {instruction.description}
+          {instruction.stepDescription}
 
           </div>
           ))}
@@ -64,7 +63,7 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
           <li>
             {RecipeIngredientQuantity.quantity} 
           {RecipeIngredientQuantity.unit}
-          {RecipeIngredientQuantity.ingredient.name} 
+          {RecipeIngredientQuantity.ingredient.ingredientName} 
             </li>
         </ul>
       ))}
