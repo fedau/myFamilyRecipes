@@ -27,7 +27,18 @@ export interface CategoriesData{
     type: string,
 }
 
-export interface IngredientsData{
-    id: number,
-    name: string,
-}
+ export interface RecipeIngredient {
+    id: number;
+    name: string;
+  }
+
+
+export interface RecipeIngredientQuantity {
+    id: number;
+    unit: string;
+    recipe: RecipeData;
+    ingredient: RecipeIngredient;
+    quantity: number;
+    // children?: React.ReactNode;
+  }
+  
