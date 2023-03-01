@@ -1,6 +1,6 @@
 import React from 'react'
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { RecipeData, CategoriesData } from '../interfaces';
+import { RecipeData, CategoriesData, RecipeIngredient } from '../interfaces';
 import Loading from '../components/Loading';
 import { useState } from "react";
 
@@ -11,31 +11,59 @@ const defaultFormData = {
   cookingTime: 0,
   image:"",
   categories:[] as string[],
-  recipeIngredientsUnit: "",
-  recipeIngredientsQuantity:0,
+  unit: "",
+  quantity:0,
   ingredientsName:"",
+
 
 };
 
+const instructionsFormData = {
 
-function AddRecipe({recipes, categoryList, handleRecipeSubmit}: { recipes: RecipeData[]; categoryList: CategoriesData[]; handleRecipeSubmit: any }) {
+  stepNumber: 0,
+  stepDescription: "",
+
+};
+
+function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ingredients,}: { recipes: RecipeData[]; categoryList: CategoriesData[]; handleRecipeSubmit: any ; instructions: RecipeData[], ingredients: RecipeIngredient}) {
     const [formData, setFormData] = useState(defaultFormData);
-    const { name, description, cookingTime, image, ingredientsName, recipeIngredientsQuantity, recipeIngredientsUnit, servings, categories }: { name: string; description: string; cookingTime: number; image: string; ingredientsName: string; recipeIngredientsQuantity: number; recipeIngredientsUnit: string; servings: number; categories: string[] } = formData;
+    const [instructionData, setInstructionData] =useState(instructionsFormData)
+    const { name, description, cookingTime, image, ingredientsName, quantity, unit, servings, categories }: { name: string; description: string; cookingTime: number; image: string; ingredientsName: string; quantity: number; unit: string; servings: number; categories: string[] } = formData;
+    const {  stepNumber, stepDescription }: { stepNumber: number; stepDescription: string } = instructionData;
 
-  // on change for when typing in fields
+
+  // on change for when recipe in fields
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prevState) => ({
         ...prevState,
         [e.target.id]: e.target.value,
       }));
     };
+      // on change for when typing in fields
+      const onChangeInstructions = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInstructionData((prevState) => ({
+          ...prevState,
+          [e.target.id]: e.target.value,
+        }));
+      };
   // on submit calls handlReciepSubmit in recipeContainer
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(formData);
-      handleRecipeSubmit(formData)
+      const categoriesForSubmit = formData.categories.map(category => {
+        const foundCategory = categoryList.find(c => c.type === category);
+        return foundCategory;
+      })
+
+      const formDataForSubmit = {
+        ...formData,
+        categories: categoriesForSubmit
+      }
+
+      handleRecipeSubmit(formDataForSubmit, instructionData)
       setFormData(defaultFormData);
     };
+
+    
   
     return (
       <>
@@ -66,16 +94,25 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit}: { recipes: Recip
           <label htmlFor="ingredientsName">ingredientsName</label>
           <br />
           <input type="text" id="ingredientsName" value={ingredientsName} onChange={onChange} />
+          
+          <br />
+          <label htmlFor="unit">unit</label>
+          <br />
+          <input type="text" id="unit" value={unit} onChange={onChange} />
+          <br />
+          <label htmlFor="quantity">quantity</label>
+          <br />
+          <input type="number" id="quantity" value={quantity} onChange={onChange} />
           <br />
           <br />
-          <label htmlFor="recipeIngredientsUnit">recipeIngredientsUnit</label>
+          <label htmlFor="stepNumber">stepNumber</label>
           <br />
-          <input type="text" id="recipeIngredientsUnit" value={recipeIngredientsUnit} onChange={onChange} />
+          <input type="number" id="stepNumber" value={stepNumber} onChange={onChangeInstructions} />
           <br />
           <br />
-          <label htmlFor="recipeIngredientsQuantity">recipeIngredientsQuantity</label>
+          <label htmlFor="stepDescription">stepDescription</label>
           <br />
-          <input type="number" id="recipeIngredientsQuantity" value={recipeIngredientsQuantity} onChange={onChange} />
+          <input type="text" id="stepDescription" value={stepDescription} onChange={onChangeInstructions} />
           <br />
           <br />
 
@@ -103,8 +140,6 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit}: { recipes: Recip
     <label htmlFor={category.type}>{category.type}</label> 
    </div> 
  ))}
-          <br />
-     
           <br />
           <br />
           <label htmlFor="image">image</label>
