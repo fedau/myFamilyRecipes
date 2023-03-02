@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class InstructionsController {
@@ -18,7 +19,10 @@ public class InstructionsController {
     InstructionsRepository instructionsRepo;
 
     @GetMapping(value = "/instructions")
-    public ResponseEntity<List<Instructions>> getAllInstructions(){
+    public ResponseEntity<List<Instructions>> getAllInstructions(@RequestParam Optional<Long> recipeId){
+        if(recipeId.isPresent()){
+            return new ResponseEntity<>(instructionsRepo.findByRecipeId(recipeId.get()), HttpStatus.OK);
+        }
         return new ResponseEntity<>(instructionsRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/instructions/{id}")

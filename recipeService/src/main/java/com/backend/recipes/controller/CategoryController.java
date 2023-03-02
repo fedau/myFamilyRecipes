@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -15,7 +16,10 @@ public class CategoryController {
     CategoryRepository categoryRepo;
 
     @GetMapping(value = "/categories")
-    public ResponseEntity<List<Category>> getAllCategories(){
+    public ResponseEntity<List<Category>> getAllCategories(@RequestParam Optional<Long> recipeId){
+        if(recipeId.isPresent()){
+            return new ResponseEntity<>(categoryRepo.findByRecipeId(recipeId.get()), HttpStatus.OK);
+        }
         return new ResponseEntity<>(categoryRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/categories/{id}")

@@ -16,17 +16,17 @@ public class Instructions {
 
     private int stepNumber;
 
-    private String Description;
+    private String stepDescription;
 
-    @JsonIgnoreProperties({"instructions"})
+//    @JsonIgnoreProperties({"instructions"})
 //    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    public Instructions(int stepNumber, String description, Recipe recipe) {
+    public Instructions(int stepNumber, String stepDescription, Recipe recipe) {
         this.stepNumber = stepNumber;
-        Description = description;
+        this.stepDescription = stepDescription;
         this.recipe = recipe;
     }
 
@@ -48,12 +48,12 @@ public class Instructions {
         this.stepNumber = stepNumber;
     }
 
-    public String getDescription() {
-        return Description;
+    public String getStepDescription() {
+        return stepDescription;
     }
 
-    public void setDescription(String description) {
-        Description = description;
+    public void setStepDescription(String stepDescription) {
+        this.stepDescription = stepDescription;
     }
 
     public Recipe getRecipe() {

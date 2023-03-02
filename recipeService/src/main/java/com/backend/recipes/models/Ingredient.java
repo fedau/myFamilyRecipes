@@ -23,10 +23,10 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     private List<RecipeIngredient> recipeIngredients;
 
-    private String name;
+    private String ingredientName;
 
-    public Ingredient(String name) {
-        this.name = name;
+    public Ingredient(String ingredientName) {
+        this.ingredientName = ingredientName;
         this.recipeIngredients = new ArrayList<RecipeIngredient>();
     }
 
@@ -40,12 +40,12 @@ public class Ingredient {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
     public List<RecipeIngredient> getRecipeIngredient() {

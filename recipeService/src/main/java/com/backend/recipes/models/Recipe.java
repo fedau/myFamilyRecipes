@@ -40,13 +40,13 @@ public class Recipe {
     @JsonIgnoreProperties({"recipes"})
     @JsonBackReference
 //    @JsonManagedReference
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RecipeIngredient> recipeIngredients;
 
 
     @JsonIgnoreProperties({"recipe"})
 //    @JsonBackReference
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Instructions> instructions;
 
 //    @JsonIgnoreProperties({"recipe"})
@@ -126,6 +126,7 @@ public class Recipe {
 
     public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
+        this.recipeIngredients.forEach(ri -> ri.setRecipe(this));
     }
 
     public void addRecipeIngredient(RecipeIngredient recipeIngredient){
@@ -137,7 +138,9 @@ public class Recipe {
     }
 
     public void setInstructions(List<Instructions> instructions) {
+
         this.instructions = instructions;
+        this.instructions.forEach(i -> i.setRecipe(this));
     }
 
     public void addInstructions(Instructions instructions){

@@ -28,7 +28,7 @@ public class IngredientController {
     @GetMapping(value = "/ingredients")
     public ResponseEntity<List<Ingredient>> getAllIngredients(@RequestParam Optional<String> name, @RequestParam Optional<Long> recipeId){
         if(name.isPresent()){
-            return new ResponseEntity<>(ingredientRepo.findByNameContainingIgnoreCase(name.get()), HttpStatus.OK);
+            return new ResponseEntity<>(ingredientRepo.findByIngredientNameContainingIgnoreCase(name.get()), HttpStatus.OK);
         }
 //        if(recipe.isPresent()){
 //            return new ResponseEntity<>(ingredientRepo.findByRecipeIngredientsRecipe(recipe.get()), HttpStatus.OK);

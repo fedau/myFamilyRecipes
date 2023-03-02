@@ -10,7 +10,7 @@ const RecipeContainer = () => {
     // states for all the api calls
 
     const [ recipes, setRecipes] = useState([]);
-    const [ ingredients, setIngredients] = useState([])
+    const [ ingredientsState, setIngredients] = useState([])
     const [ instructions, setInstructions] = useState([])
     const [recipeIngredients, setRecipeIngredients] = useState([])
     const [categories, setCategories] = useState([])
@@ -41,13 +41,19 @@ const RecipeDetailWrapper = () => {
 };
 
 //   FORM SUBMIT
-const handleRecipeSubmit = (recipe, instructions) => {
+const handleRecipeSubmit = ( recipe, instructions, recipeIngredients) => {
     const request = new Request();
-    request.post('/api/recipes', recipe)
-    .then( () => request.post('/api/instructions', instructions))
-    .then(() => {
-        window.location = '/'
-    })
+    // request.post('/api/recipes', ingredients)
+    request.post('/api/recipes', {...recipe, instructions})
+    .then( request.post('/api/recipeIngredients', recipeIngredients))
+    // await recipe response
+    // .then( (res) => res.json() )
+//     .then( (savedRecipe) => {
+//         request.post('/api/instructions', instructions)
+// })
+    // .then(() => {
+    //     window.location = '/'
+    // })
 }
       
 
@@ -57,7 +63,7 @@ const handleRecipeSubmit = (recipe, instructions) => {
     <Routes>
         <Route path='/' element={<Homep recipes={recipes}/>}/>
         <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
-        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredients={ingredients} handleRecipeSubmit={handleRecipeSubmit}/>}/>
+        <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredientsState={ingredientsState} handleRecipeSubmit={handleRecipeSubmit}/>}/>
         <Route path="/recipes/:id" element={<RecipeDetailWrapper />} />
 
 

@@ -1,5 +1,6 @@
 package com.backend.recipes.repository;
 
+import com.backend.recipes.models.Ingredient;
 import com.backend.recipes.models.Instructions;
 import com.backend.recipes.models.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,5 @@ import java.util.List;
 @Repository
 public interface InstructionsRepository extends JpaRepository<Instructions, Long> {
 
-//    List<Recipe> findByRecipeId(Long id);
+    List<Instructions> findByRecipeId(Long id);
 }
