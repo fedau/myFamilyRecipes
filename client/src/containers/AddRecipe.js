@@ -61,7 +61,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
     };
       // on change for when typing in fields
       const onChangeInstructions = (e) => {
-        setRecipeIngredientsData((prevState) => ({
+        setInstructionData((prevState) => ({
           ...prevState,
           [e.target.id]: e.target.value,
         }));
@@ -72,7 +72,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
 
         const newRecipeIngredients = {... recipeIngredientData}
         newRecipeIngredients.ingredientsName = ingredientName
-        setIngredientsData(newRecipeIngredients)
+        setRecipeIngredientsData(newRecipeIngredients)
 
 
         // let existingIngredient = recipeIngredientData.find(ingredient => ingredient.name === ingredientName);
@@ -119,7 +119,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
       const newFormData = {... formData}
       newFormData.unit = recipeIngredientData.unit;
       newFormData.quantity = recipeIngredientData.quantity
-    const foundIngredient = null;
+    let foundIngredient = null;
     for(let ingredient of ingredientsState){
         console.log(ingredient.id);
         console.log(recipeIngredientData.ingredientsName);
@@ -132,11 +132,14 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
         return foundCategory;
       })
       newFormData.categories = categoriesForSubmit
-      newFormData.ingredient = foundIngredient
+      // newFormData.ingredient = foundIngredient
+      newFormData.instructions = instructionData
+      newFormData.ingredients = foundIngredient
+      // newFormData.recipeIngredients = [recipeIngredientData]
 
   
       console.log(newFormData);
-      handleRecipeSubmit(newFormData, instructionData, recipeIngredientData)
+      handleRecipeSubmit(newFormData)
       setFormData(defaultFormData);
     };
 

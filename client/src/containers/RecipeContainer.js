@@ -41,11 +41,12 @@ const RecipeDetailWrapper = () => {
 };
 
 //   FORM SUBMIT
-const handleRecipeSubmit = ( recipe, instructions, recipeIngredients) => {
+const handleRecipeSubmit = ( recipe) => {
     const request = new Request();
     // request.post('/api/recipes', ingredients)
-    request.post('/api/recipes', {...recipe, instructions})
-    .then( request.post('/api/recipeIngredients', recipeIngredients))
+    console.log();
+    request.post('/api/recipes', {...recipe})
+    // .then( request.post('/api/recipeIngredients', recipeIngredients))
     // await recipe response
     // .then( (res) => res.json() )
 //     .then( (savedRecipe) => {
