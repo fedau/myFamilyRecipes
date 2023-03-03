@@ -27,9 +27,6 @@ public class RecipeController {
         if(name.isPresent()){
             return new ResponseEntity<>(recipeRepo.findByNameContainingIgnoreCase(name.get()), HttpStatus.OK);
         }
-//        if(ingredient.isPresent()){
-//            return new ResponseEntity<>(recipeRepo.findByRecipeIngredientsIngredient(ingredient.get()), HttpStatus.OK);
-//        }
         return new ResponseEntity<>(recipeRepo.findAll(), HttpStatus.OK);
     }
     @GetMapping(value = "/recipes/{id}")
@@ -39,7 +36,10 @@ public class RecipeController {
 
     @PostMapping(value = "/recipes")
     public ResponseEntity<Recipe> postRecipe(@RequestBody Recipe recipe){
-
+// todo for each ingredient check if new? => save to make new ingredient
+//  save new ingredient
+//  get saved ingredient id
+//  add ingredient id to  ingredient object? recipeingredient
         recipeRepo.save(recipe);
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
