@@ -23,12 +23,16 @@ const defaultFormData = {
 
 function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ingredientsState,}) {
     const existingIngredients = ingredientsState.map(ingredient => {
-        return {id: ingredient.id, name: ingredient.ingredientName}
+        return {id: ingredient.id, ingredientName: ingredient.ingredientName}
     });
   const [formData, setFormData] = useState(defaultFormData);
   const [instructionData, setInstructionData] = useState([{ stepNumber: 0, stepDescription: '' }]);
   const [ingredientsData, setIngredientsData] = useState("")
-  const [recipeIngredientData, setRecipeIngredientsData] = useState({ingredientsName: "", unit: "", quantity: 0 })
+  // const [recipeIngredientData, setRecipeIngrediensData] = useState({ingredientsName: "", unit: "", quantity: 0 })
+  const [recipeIngredientsData, setRecipeIngredientsData] = useState([{
+    unit: "",
+    ingredient: { id: "", ingredientName: "" },
+    quantity: 0,}]);
   // MULTIPLE INSTRUCTIONS STEPS
     const handleStepChange = (event, index) => {
       const newInstructions = [...instructionData];
@@ -47,65 +51,110 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
       setInstructionData(newInstructions);
     };
   
-  // on change for when recipe in fields
+  // ON CHANGE RECIPE FIELDS
     const onChange = (e) => {
       setFormData((prevState) => ({
         ...prevState,
         [e.target.id]: e.target.value,
       }));
     };
-      // on change for when typing in fields
-      const onChangeInstructions = (e) => {
-        setInstructionData((prevState) => ({
-          ...prevState,
-          [e.target.id]: e.target.value,
-        }));
-      };
-// ON CHANGE INGREDIENTS
-      const onChangeIngredients = (e) => {
-        let ingredientName = e.target.value;
+    
+    const handleAddIngredient = () => {
+      const newIngredient = [...recipeIngredientsData,{
+        unit: "",
+        ingredient: { id: "", ingredientName: "" },
+        quantity: 0,}
+      ];
+      setRecipeIngredientsData(newIngredient);
+    };
+// // ON CHANGE INGREDIENTS
+//       const onChangeIngredients = (e) => {
+//         let ingredientName = e.target.value;
 
-        const newRecipeIngredients = {... recipeIngredientData}
-        newRecipeIngredients.ingredientsName = ingredientName
-        setRecipeIngredientsData(newRecipeIngredients)
+//         const newRecipeIngredients = {... recipeIngredientData}
+//         newRecipeIngredients.ingredientsName = ingredientName
+//         setRecipeIngredientsData(newRecipeIngredients)
+//       }
+// // ON CHANGE RECIPEINGREDIENTS
+//       const onChangeRecipeUnit = (e) => {
+//         const newRecipeIngredients = {... recipeIngredientData}
+//         newRecipeIngredients["unit"] = e.target.value;
+//         setRecipeIngredientsData(newRecipeIngredients)
+
+//         console.log(newRecipeIngredients);
+
+//       }
+//       const onChangeRecipeQty = (e) => {
+//         const newRecipeIngredients = {... recipeIngredientData}
+//         newRecipeIngredients["quantity"] = e.target.value;
+//         setRecipeIngredientsData(newRecipeIngredients)
+//       }
+
+//       const handleAddIngredient = () => {
+//         const newIngredient = { ingredientsName: "", unit: "", quantity: 0 };
+//         setRecipeIngredientsData([...recipeIngredientData, newIngredient]);
+//       };
+
+  // ON CHANGE INGREDIENTS
+  const onChangeIngredients = (e, changedIngredientIndex) => {
+    let selectedIngredientName = e.target.value
+    let selectedIngredient = existingIngredients.find(ingredient => ingredient.ingredientName === selectedIngredientName)
+    console.log(selectedIngredient);
+    console.log(existingIngredients);
+    const newRecipeIngredients = recipeIngredientsData.map((recipeIngredient, ingredientIndex) => {
+      if(ingredientIndex === changedIngredientIndex){
+
+        return {...recipeIngredient, ingredient:{...selectedIngredient}}
       }
+      return {...recipeIngredient}
+    })
+    setRecipeIngredientsData(newRecipeIngredients);
+  };
+
 // ON CHANGE RECIPEINGREDIENTS
-      const onChangeRecipeUnit = (e) => {
-        const newRecipeIngredients = {... recipeIngredientData}
-        newRecipeIngredients["unit"] = e.target.value;
-        setRecipeIngredientsData(newRecipeIngredients)
+const onChangeRecipeUnit = (e, index) => {
+  const newRecipeIngredients = [...recipeIngredientsData];
+  newRecipeIngredients[index].unit = e.target.value;
+  setRecipeIngredientsData(newRecipeIngredients);
+};
 
-        console.log(newRecipeIngredients);
+const onChangeRecipeQty = (e, index) => {
+  const newRecipeIngredients = [...recipeIngredientsData];
+  newRecipeIngredients[index].quantity = e.target.value;
+  setRecipeIngredientsData(newRecipeIngredients);
+};
 
-      }
-      const onChangeRecipeQty = (e) => {
-        const newRecipeIngredients = {... recipeIngredientData}
-        newRecipeIngredients["quantity"] = e.target.value;
-        setRecipeIngredientsData(newRecipeIngredients)
-      }
+      
+
   // on submit calls handlReciepSubmit in recipeContainer
     const onSubmit = (e) => {
       e.preventDefault();
       const newFormData = {... formData}
-      newFormData.unit = recipeIngredientData.unit;
-      newFormData.quantity = recipeIngredientData.quantity
+      newFormData.unit = recipeIngredientsData.unit;
+      newFormData.quantity = recipeIngredientsData.quantity
     let foundIngredient = null;
     for(let ingredient of ingredientsState){
-        if(ingredient.id == recipeIngredientData.ingredientsName){
-            recipeIngredientData.ingredient = ingredient
+        if(ingredient.id == recipeIngredientsData.ingredientsName){
+            recipeIngredientsData.ingredient = ingredient
         }
     }
       const categoriesForSubmit = formData.categories.map(category => {
         const foundCategory = categoryList.find(c => c.type === category);
         return foundCategory;
       })
+      // const newRecipeIngredientsData = recipeIngredientsData.map(ingredientData => {
+      //   const ingredient = ingredientsState.find(ingredient => ingredient.id === ingredientData.ingredient.id);
+      //   return {...ingredientData, ingredient};
+      // });
+      // newFormData.recipeIngredients = newRecipeIngredientsData;
       newFormData.categories = categoriesForSubmit
       newFormData.instructions = instructionData
-      newFormData.recipeIngredients = [recipeIngredientData]
+      newFormData.recipeIngredients = recipeIngredientsData
       console.log(newFormData);
       handleRecipeSubmit(newFormData)
       setFormData(defaultFormData);
     };
+
 
     return (
       <>
@@ -134,25 +183,52 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
           <input type="number" id="cookingTime" value={formData.cookingTime} onChange={onChange} />
           <br />
           <br />
-          {/* INGREDIENTS */}
-          <label htmlFor="ingredientsName">ingredientsName</label>
-<br />
-<input type="text" id="ingredientsName" value={instructionData.ingredientsName} onChange={onChangeIngredients} list="ingredients" />
-<datalist id="ingredients">
-  {existingIngredients.map((ingredient) => {
-    return <option value={ingredient.id}>{ingredient.name}</option>}
-  )}
-</datalist>
+   {/* INGREDIENTS */}
+          {recipeIngredientsData.map((recipeIngredient, index) => (
+            <div key={index}>
+          <label htmlFor={`ingredientsName`}>ingredientsName</label>
           <br />
-          <label htmlFor="unit">unit</label>
+          <input
+            type="text"
+            id={`ingredientsName${index}`}
+            value={instructionData.ingredientsName}
+            onChange={(e) => onChangeIngredients(e, index)}
+            list="ingredients"
+            />
+          <datalist id="ingredients">
+            {existingIngredients.map((ingredient) => {
+              return (
+                <option key={ingredient.id} value={ingredient.ingredientName}>
+                  {ingredient.ingredientName}
+                </option>
+              );
+            })}
+          </datalist>
           <br />
-          <input type="text" id="unit" value={recipeIngredientData.unit} onChange={onChangeRecipeUnit} />
+              <label htmlFor={`unit${index}`}>unit</label>
           <br />
-          <label htmlFor="quantity">quantity</label>
+          <input
+            type="text"
+            id={`unit${index}`}
+            value={recipeIngredient.unit}
+            onChange={(e) => onChangeRecipeUnit(e, index)}
+          />
           <br />
-          <input type="number" id="quantity" value={recipeIngredientData.quantity} onChange={onChangeRecipeQty} />
+          <label htmlFor={`quantity${index}`}>quantity</label>
+          <br />
+          <input
+            type="number"
+            id={`quantity${index}`}
+            value={recipeIngredient.quantity}
+            onChange={(e) => onChangeRecipeQty(e, index)}
+          />
           <br />
           <br />
+        </div>
+      ))}
+      <button type="button" onClick={handleAddIngredient}>Add ingredient</button>
+
+
           {/* STEPS DESCRIPTION  */}
           {instructionData.map((instruction, index) => (
         <div key={index}>
@@ -203,9 +279,8 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
       
     );
   
-}
 
-
+    }
   export default  withAuthenticationRequired(AddRecipe, {
       onRedirecting: () => <Loading />,
     })
