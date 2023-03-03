@@ -14,7 +14,7 @@ public class RecipeIngredient {
     @Column(name = "recipeIngredient_id")
     private Long id;
 
-    private double Quantity;
+    private double quantity;
     private String unit;
 
     @JsonIgnoreProperties({"recipeIngredients"})
@@ -24,13 +24,13 @@ public class RecipeIngredient {
     private Recipe recipe;
 
     @JsonIgnoreProperties({"recipeIngredient"})
-//    @JsonBackReference
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
     public RecipeIngredient(double quantity, String unit, Recipe recipe, Ingredient ingredient) {
-        Quantity = quantity;
+        this.quantity = quantity;
         this.unit = unit;
         this.recipe = recipe;
         this.ingredient = ingredient;
@@ -46,11 +46,11 @@ public class RecipeIngredient {
     }
 
     public double getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(double quantity) {
-        Quantity = quantity;
+        quantity = quantity;
     }
 
     public String getUnit() {
