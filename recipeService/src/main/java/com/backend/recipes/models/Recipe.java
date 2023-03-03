@@ -1,8 +1,6 @@
 package com.backend.recipes.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -38,22 +36,13 @@ public class Recipe {
     )
     private List<Category> categories;
     @JsonIgnoreProperties({"recipes"})
-//    @JsonBackReference
-//    @JsonManagedReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RecipeIngredient> recipeIngredients;
 
 
     @JsonIgnoreProperties({"recipe"})
-//    @JsonBackReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Instructions> instructions;
-
-//    @JsonIgnoreProperties({"recipe"})
-//    @OneToOne
-//    @JoinColumn(name = "image_id", nullable = true)
-//    private Image image;
-
 
     public Recipe(String name, String description, int cookingTime, int servings ){
         this.name = name;

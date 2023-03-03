@@ -18,13 +18,11 @@ public class RecipeIngredient {
     private String unit;
 
     @JsonIgnoreProperties({"recipeIngredients"})
-//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
     @JsonIgnoreProperties({"recipeIngredient"})
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
