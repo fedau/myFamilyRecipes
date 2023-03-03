@@ -68,6 +68,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
         const newRecipeIngredients = {... recipeIngredientData}
         newRecipeIngredients.ingredientsName = ingredientName
         setRecipeIngredientsData(newRecipeIngredients)
+      }
 // ON CHANGE RECIPEINGREDIENTS
       const onChangeRecipeUnit = (e) => {
         const newRecipeIngredients = {... recipeIngredientData}
@@ -199,9 +200,12 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
           <button type="submit">Upload post</button>
         </form>
       </>
+      
     );
-  }
   
+}
+
+
   export default  withAuthenticationRequired(AddRecipe, {
       onRedirecting: () => <Loading />,
     })
