@@ -46,7 +46,7 @@ const handleRecipeSubmit = ( recipe) => {
     // request.post('/api/recipes', ingredients)
     console.log();
     request.post('/api/recipes', {...recipe})
-    // .then( request.post('/api/recipeIngredients', recipeIngredients))
+    // .then( request.post('/api/recipeIngredients', recipe))
     // await recipe response
     // .then( (res) => res.json() )
 //     .then( (savedRecipe) => {

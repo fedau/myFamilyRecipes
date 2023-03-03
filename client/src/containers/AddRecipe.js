@@ -14,15 +14,11 @@ const defaultFormData = {
     unit: "",
     quantity:0,
     ingredientsName:"",
-  
-  
   };
   
   const instructionsFormData = {
-  
     stepNumber: 0,
     stepDescription: "",
-  
   };
 
 function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ingredientsState,}) {
@@ -33,7 +29,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
   const [instructionData, setInstructionData] = useState([{ stepNumber: 0, stepDescription: '' }]);
   const [ingredientsData, setIngredientsData] = useState("")
   const [recipeIngredientData, setRecipeIngredientsData] = useState({ingredientsName: "", unit: "", quantity: 0 })
-  
+  // MULTIPLE INSTRUCTIONS STEPS
     const handleStepChange = (event, index) => {
       const newInstructions = [...instructionData];
       newInstructions[index].stepNumber = event.target.value;
@@ -51,7 +47,6 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
       setInstructionData(newInstructions);
     };
   
-
   // on change for when recipe in fields
     const onChange = (e) => {
       setFormData((prevState) => ({
@@ -66,39 +61,14 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
           [e.target.id]: e.target.value,
         }));
       };
-
+// ON CHANGE INGREDIENTS
       const onChangeIngredients = (e) => {
         let ingredientName = e.target.value;
 
         const newRecipeIngredients = {... recipeIngredientData}
         newRecipeIngredients.ingredientsName = ingredientName
         setRecipeIngredientsData(newRecipeIngredients)
-
-
-        // let existingIngredient = recipeIngredientData.find(ingredient => ingredient.name === ingredientName);
-        // if (existingIngredient) {
-        //     setRecipeIngredientsData((prevState) => ({
-        //     ...prevState,
-        //     // unit: existingIngredient.unit,
-        //     // quantity: existingIngredient.quantity,
-        //     ingredientsName: ingredientName,
-        //   }));
-        // } else {
-        //     setRecipeIngredientsData((prevState) => ({
-        //     ...prevState,
-        //     ingredientsName: ingredientName,
-        //   }));
-        // }
-      }
-      
-      
-    //   const onChangeIngredients = (e) => {
-    //     setIngredientsData((prevState) => ({
-    //         ...prevState,
-    //         [e.target.id]: e.target.value,
-    //     }))
-    //   }
-
+// ON CHANGE RECIPEINGREDIENTS
       const onChangeRecipeUnit = (e) => {
         const newRecipeIngredients = {... recipeIngredientData}
         newRecipeIngredients["unit"] = e.target.value;
@@ -107,7 +77,6 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
         console.log(newRecipeIngredients);
 
       }
-
       const onChangeRecipeQty = (e) => {
         const newRecipeIngredients = {... recipeIngredientData}
         newRecipeIngredients["quantity"] = e.target.value;
@@ -121,10 +90,8 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
       newFormData.quantity = recipeIngredientData.quantity
     let foundIngredient = null;
     for(let ingredient of ingredientsState){
-        console.log(ingredient.id);
-        console.log(recipeIngredientData.ingredientsName);
         if(ingredient.id == recipeIngredientData.ingredientsName){
-            foundIngredient = ingredient
+            recipeIngredientData.ingredient = ingredient
         }
     }
       const categoriesForSubmit = formData.categories.map(category => {
@@ -132,12 +99,8 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
         return foundCategory;
       })
       newFormData.categories = categoriesForSubmit
-      // newFormData.ingredient = foundIngredient
       newFormData.instructions = instructionData
-      newFormData.ingredients = foundIngredient
-      // newFormData.recipeIngredients = [recipeIngredientData]
-
-  
+      newFormData.recipeIngredients = [recipeIngredientData]
       console.log(newFormData);
       handleRecipeSubmit(newFormData)
       setFormData(defaultFormData);
@@ -170,7 +133,7 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
           <input type="number" id="cookingTime" value={formData.cookingTime} onChange={onChange} />
           <br />
           <br />
-          {/* INGGEDIENTSS */}
+          {/* INGREDIENTS */}
           <label htmlFor="ingredientsName">ingredientsName</label>
 <br />
 <input type="text" id="ingredientsName" value={instructionData.ingredientsName} onChange={onChangeIngredients} list="ingredients" />
@@ -179,11 +142,6 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
     return <option value={ingredient.id}>{ingredient.name}</option>}
   )}
 </datalist>
-
-          {/* <label htmlFor="ingredientsName">ingredientsName</label>
-          <br />
-          <input type="text" id="ingredientsName" value={formData.ingredientsName} onChange={onChangeIngredients} />
-           */}
           <br />
           <label htmlFor="unit">unit</label>
           <br />
@@ -204,7 +162,6 @@ function AddRecipe({recipes, categoryList, handleRecipeSubmit, instructions, ing
         </div>
       ))}
       <button type="button" onClick={handleAddInstruction}>Add Instruction</button>
-
 
         {/* ALL TYPES */}
           {/* mapping through all the existing types currently in the database */}

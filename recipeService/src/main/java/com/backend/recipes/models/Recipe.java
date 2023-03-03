@@ -38,7 +38,7 @@ public class Recipe {
     )
     private List<Category> categories;
     @JsonIgnoreProperties({"recipes"})
-    @JsonBackReference
+//    @JsonBackReference
 //    @JsonManagedReference
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RecipeIngredient> recipeIngredients;
