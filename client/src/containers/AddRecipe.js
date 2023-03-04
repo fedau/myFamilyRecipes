@@ -84,9 +84,13 @@ function AddRecipe({
     let selectedIngredient = existingIngredients.find(
       (ingredient) => ingredient.ingredientName === selectedIngredientName
     );
+    if (selectedIngredient === undefined) {
+      selectedIngredient = { ingredientName: selectedIngredientName };
+    }
     const newRecipeIngredients = recipeIngredientsData.map(
       (recipeIngredient, ingredientIndex) => {
         if (ingredientIndex === changedIngredientIndex) {
+          console.log(selectedIngredient);
           return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
         }
         return { ...recipeIngredient };
@@ -107,6 +111,9 @@ function AddRecipe({
     newRecipeIngredients[index].quantity = e.target.value;
     setRecipeIngredientsData(newRecipeIngredients);
   };
+
+  
+  
 
   // on submit calls handlReciepSubmit in recipeContainer
   const onSubmit = (e) => {
@@ -273,18 +280,16 @@ function AddRecipe({
           </div>
         ))}
         {/* ADD IMAGE */}
-        <br />
-        <br />
-        <label htmlFor="image">image</label>
-        <br />
-        <input
-          type="text"
-          id="image"
-          value={formData.image}
-          onChange={onChange}
-        />
-        <br />
-        <br />
+        <div>
+          <label htmlFor="image">Upload Image:</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            ref={this.fileInputRef}
+            onChange={this.handleImageUpload}
+          />
+        </div> 
         <button type="submit">Upload post</button>
       </form>
     </>
