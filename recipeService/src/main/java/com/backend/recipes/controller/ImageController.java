@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 public class ImageController {
-
     @Autowired
     ImageRepository imageRepo;
+
 
     @GetMapping(value = "/images")
     public ResponseEntity<List<Image>> getAllImages(){

@@ -75,25 +75,4 @@ public class RecipeController {
         return recipe;
     }
 
-    @PostMapping(value = "/recipes")
-    public Recipe createRecipe(@RequestBody Recipe recipe) {
-        for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
-            Optional<Ingredient> optionalIngredient = ingredientRepository.findByIngredientNameIgnoreCase(recipeIngredient.getIngredient().getName());
-            if (optionalIngredient.isPresent()) {
-                recipeIngredient.setIngredient(optionalIngredient.get());
-            } else {
-                Ingredient newIngredient = new Ingredient();
-                newIngredient.setIngredientName(recipeIngredient.getIngredient().getIngredientName());
-                ingredientRepository.save(newIngredient);
-                recipeIngredient.setIngredient(newIngredient);
-            }
-        }
-        recipe = recipeRepo.save(recipe);
-        for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
-            recipeIngredient.setRecipe(recipe);
-            recipeIngredientRepository.save(recipeIngredient);
-        }
-        return recipe;
-    }
-
 }
