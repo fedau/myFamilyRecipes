@@ -112,7 +112,25 @@ function AddRecipe({
     setRecipeIngredientsData(newRecipeIngredients);
   };
 
-  
+  // HANDLE IMAGE SUBMIT
+  const handleImageSubmit = async (event) => {
+    event.preventDefault();
+    const { presignedUrl } = this.state;
+    const file = this.fileInputRef.current.files[0];
+    try {
+      await fetch(presignedUrl, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+      const imageUrl = presignedUrl.split("?")[0];
+      this.setState({ imageUrl });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   
 
   // on submit calls handlReciepSubmit in recipeContainer
@@ -280,16 +298,18 @@ function AddRecipe({
           </div>
         ))}
         {/* ADD IMAGE */}
-        <div>
-          <label htmlFor="image">Upload Image:</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            ref={this.fileInputRef}
-            onChange={this.handleImageUpload}
-          />
-        </div> 
+        <br />
+        <br />
+        <label htmlFor="image">image</label>
+        <br />
+        <input
+          type="text"
+          id="image"
+          value={formData.image}
+          onChange={onChange}
+        />
+        <br />
+        <br />
         <button type="submit">Upload post</button>
       </form>
     </>

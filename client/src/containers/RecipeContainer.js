@@ -5,10 +5,11 @@ import AddRecipe from './AddRecipe'
 import Favourites from './Favourites'
 import Homep from './Homep'
 import RecipeDetail from '../components/RecipeDetail'
+import EditForm from '../components/EditForm'
 
 const RecipeContainer = () => {
+    
     // states for all the api calls
-
     const [ recipes, setRecipes] = useState([]);
     const [ ingredientsState, setIngredients] = useState([])
     const [ instructions, setInstructions] = useState([])
@@ -33,22 +34,45 @@ const RecipeContainer = () => {
         })
     }, [])
   
-// this wrapper for a single recipe. Takes the id out of the url and puts the id on the single recipe
-const RecipeDetailWrapper = () => {
-  const { id } = useParams();
-  const foundRecipe = recipes.find((recipe) => recipe.id === parseInt(id));
-  return <RecipeDetail recipe={foundRecipe} />; 
-};
 
-//   FORM SUBMIT
-const handleRecipeSubmit = ( recipe) => {
-    const request = new Request();
-    request.post('/api/recipes', {...recipe})
-    .then(() => {
-        window.location = `/`
-    })
+    const handleEditButtonClick = () => {
+
+    }
+    // this wrapper for a single recipe. Takes the id out of the url and puts the id on the single recipe
+    const findRecipeById = (id) => {
+        return recipes.find((recipe) => {
+            return recipe.id === parseInt(id);
+        })
+    }
+    const handlePut =(recipe) => {
+        const request = new Request();
+
+     request.put(`/api/recipes/${recipe.id}`, recipe).then(() => {
+        window.location = '/'
+    }) 
 }
-      
+    const RecipeDetailWrapper = () => {
+        const { id } = useParams();
+        //   const foundRecipe = recipes.find((recipe) => recipe.id === parseInt(id));
+        let foundRecipe = findRecipeById(id)
+        return <RecipeDetail recipe={foundRecipe} />; 
+    };
+    
+    const RecipeEditFormWrapper = ({ingredientsState}) => {
+        const {id} = useParams();
+        let foundRecipe = findRecipeById(id);
+        return <EditForm recipe={foundRecipe}  ingredientsState={ingredientsState} onEdit={handlePut} />
+    }
+    
+    //   FORM SUBMIT
+    const handleRecipeSubmit = ( recipe) => {
+        const request = new Request();
+        request.post('/api/recipes', {...recipe})
+        .then(() => {
+            window.location = `/`
+        })
+    }
+    
 
       return (
           <>
@@ -56,6 +80,7 @@ const handleRecipeSubmit = ( recipe) => {
     <Routes>
         <Route path='/' element={<Homep recipes={recipes}/>}/>
         <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
+        <Route path='/:id/edit' element={ <RecipeEditFormWrapper /> } />
         <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredientsState={ingredientsState} handleRecipeSubmit={handleRecipeSubmit}/>}/>
         <Route path="/recipes/:id" element={<RecipeDetailWrapper />} />
 

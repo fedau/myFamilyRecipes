@@ -5,9 +5,11 @@
 
 import React from 'react';
 import {useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { RecipeIngredientQuantity,  RecipeData } from '../interfaces';
 
 const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
+  const navigate = useNavigate()
 
 // state for recipeIngredient and fetch request to find ingredients linked to recipe Id
   const [recipeIngredients , setRecipeIngredientsRecipeId] = useState([] as RecipeIngredientQuantity[])
@@ -32,6 +34,10 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
     return "waiting on the recipe"
 }
 
+
+const onEdit = () => {
+  navigate(`/${recipe.id}/edit`)
+}
 // Recipe
   return (
     <>
@@ -69,7 +75,7 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
       ))}
     </div> 
 
-
+<button onClick={onEdit}> Edit this recipe</button>
 
     </>
   );
