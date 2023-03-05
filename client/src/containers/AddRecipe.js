@@ -37,6 +37,32 @@ function AddRecipe({
       quantity: 0,
     },
   ]);
+// state for images
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  // function for image upload
+  const handleFileInputChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleImageUpload = async () => {
+    // get secure url from our server
+    const { url } = await fetch("/s3Url").then((res) => res.json());
+
+    // post the image directly to the s3 bucket
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      body: file
+    });
+
+    const imgUrl = url.split('?')[0];
+    setImageUrl(imgUrl);
+  };
+
   // MULTIPLE INSTRUCTIONS STEPS
   const handleStepChange = (event, index) => {
     const newInstructions = [...instructionData];
@@ -146,6 +172,7 @@ function AddRecipe({
     newFormData.categories = categoriesForSubmit;
     newFormData.instructions = instructionData;
     newFormData.recipeIngredients = recipeIngredientsData;
+    newFormData.image = imageUrl;
     console.log(newFormData);
     handleRecipeSubmit(newFormData);
     setFormData(defaultFormData);
@@ -297,9 +324,8 @@ function AddRecipe({
             <label htmlFor={category.type}>{category.type}</label>
           </div>
         ))}
-        {/* ADD IMAGE */}
         <br />
-        <br />
+        {/* <br />
         <label htmlFor="image">image</label>
         <br />
         <input
@@ -307,10 +333,18 @@ function AddRecipe({
           id="image"
           value={formData.image}
           onChange={onChange}
-        />
+        /> */}
+
+        {/* ADD IMAGE */}
+
+        {imageUrl && <img src={imageUrl} alt="preview" />}
         <br />
+        <input type="file" accept="image/*" onChange={handleFileInputChange} />
+        <button type="button" onClick={handleImageUpload} disabled={!file}>
+          Upload Image
+        </button>
         <br />
-        <button type="submit">Upload post</button>
+        <button type="submit">Upload recipe</button>
       </form>
     </>
   );
