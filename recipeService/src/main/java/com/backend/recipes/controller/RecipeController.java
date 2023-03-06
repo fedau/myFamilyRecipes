@@ -66,4 +66,31 @@ public class RecipeController {
         return recipe;
     }
 
+    @PutMapping(value = "/recipes/{id}")
+    public ResponseEntity<Recipe> updateRecipe(@RequestBody Recipe recipe, @PathVariable Long id){
+//        for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
+//            Optional<Ingredient> optionalIngredient = ingredientRepository.findByIngredientNameIgnoreCase(recipeIngredient.getIngredient().getIngredientName());
+//            if (optionalIngredient.isPresent()) {
+//                recipeIngredient.setIngredient(optionalIngredient.get());
+//            } else {
+//                Ingredient newIngredient = new Ingredient();
+//                newIngredient.setIngredientName(recipeIngredient.getIngredient().getIngredientName());
+//                ingredientRepository.save(newIngredient);
+//                recipeIngredient.setIngredient(newIngredient);
+//            }
+//        }
+        Recipe existingRecipe = recipeRepo.findById(id).get();
+        existingRecipe.setName(recipe.getName());
+        existingRecipe.setDescription(recipe.getDescription());
+        existingRecipe.setCookingTime(recipe.getCookingTime());
+        existingRecipe.setServings(recipe.getServings());
+
+        recipeRepo.save(existingRecipe);
+
+        return new ResponseEntity<>(existingRecipe, HttpStatus.OK);
+    }
+
+
+
+
 }

@@ -12,13 +12,24 @@ class Request {
         })
     }
 
+    // post(url, payload) {
+    //     return fetch(url, {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(payload),
+    //     });
+    //   }
+
     post(url, payload){
         return fetch(url, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body:JSON.stringify(payload)
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: payload
         })
     }
+    
 
 
         put(url, payload){
@@ -26,8 +37,6 @@ class Request {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body:JSON.stringify(payload)
-
-
             })
         }
     }

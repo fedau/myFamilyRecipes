@@ -27,7 +27,7 @@ public class S3Controller {
 
     // constructor injection for s3Client
 
-    @PostMapping("/upload")
+    @PutMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String key = UUID.randomUUID().toString();
 
