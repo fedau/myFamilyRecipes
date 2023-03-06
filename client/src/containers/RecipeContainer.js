@@ -46,7 +46,6 @@ const RecipeContainer = () => {
     }
     const handlePut =(recipe) => {
         const request = new Request();
-
      request.put(`/api/recipes/${recipe.id}`, recipe).then(() => {
         window.location = '/'
     }) 
@@ -61,7 +60,7 @@ const RecipeContainer = () => {
     const RecipeEditFormWrapper = ({ingredientsState}) => {
         const {id} = useParams();
         let foundRecipe = findRecipeById(id);
-        return <EditForm recipe={foundRecipe}  ingredientsState={ingredientsState} onEdit={handlePut} />
+        return <EditForm recipe={foundRecipe} ingredientsState={ingredientsState} onEdit={handlePut} />
     }
     
     //   FORM SUBMIT
@@ -72,13 +71,13 @@ const RecipeContainer = () => {
             window.location = `/`
         })
     }
-    
+
 
       return (
           <>
 
     <Routes>
-        <Route path='/' element={<Homep recipes={recipes}/>}/>
+        <Route path='/' element={<Homep recipes={recipes} categoryList={categories}  />}/>
         <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
         <Route path='/:id/edit' element={ <RecipeEditFormWrapper /> } />
         <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredientsState={ingredientsState} handleRecipeSubmit={handleRecipeSubmit}/>}/>
