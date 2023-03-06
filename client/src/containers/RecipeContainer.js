@@ -86,7 +86,9 @@ const RecipeContainer = () => {
         .then(refreshRecipeData())
         .then(data => data.json())
         .then((data) => {
-         navigate(`/recipes/${data.id}`)
+        //  navigate(`/recipes/${data.id}`)
+        window.location = '/'
+
         }
         )
     }
