@@ -80,25 +80,25 @@ const EditForm = ({recipe, ingredientsState, onEdit}) => {
       };
     
       // ON CHANGE INGREDIENTS
-      const onChangeIngredients = (e, changedIngredientIndex) => {
-        let selectedIngredientName = e.target.value;
-        let selectedIngredient = existingIngredients.find(
-          (ingredient) => ingredient.ingredientName === selectedIngredientName
-        );
-        if (selectedIngredient === undefined) {
-          selectedIngredient = { ingredientName: selectedIngredientName };
-        }
-        const newRecipeIngredients = recipeIngredientsData.map(
-          (recipeIngredient, ingredientIndex) => {
-            if (ingredientIndex === changedIngredientIndex) {
-              console.log(selectedIngredient);
-              return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
-            }
-            return { ...recipeIngredient };
-          }
-        );
-        setRecipeIngredientsData(newRecipeIngredients);
-      };
+      // const onChangeIngredients = (e, changedIngredientIndex) => {
+      //   let selectedIngredientName = e.target.value;
+      //   let selectedIngredient = existingIngredients.find(
+      //     (ingredient) => ingredient.ingredientName === selectedIngredientName
+      //   );
+      //   if (selectedIngredient === undefined) {
+      //     selectedIngredient = { ingredientName: selectedIngredientName };
+      //   }
+      //   const newRecipeIngredients = recipeIngredientsData.map(
+      //     (recipeIngredient, ingredientIndex) => {
+      //       if (ingredientIndex === changedIngredientIndex) {
+      //         console.log(selectedIngredient);
+      //         return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
+      //       }
+      //       return { ...recipeIngredient };
+      //     }
+      //   );
+      //   setRecipeIngredientsData(newRecipeIngredients);
+      // };
     
       // ON CHANGE RECIPEINGREDIENTS
       const onChangeRecipeUnit = (e, index) => {

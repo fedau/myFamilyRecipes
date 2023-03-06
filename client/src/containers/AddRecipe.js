@@ -3,6 +3,7 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { RecipeData, CategoriesData, RecipeIngredient } from "../interfaces";
 import Loading from "../components/Loading";
 import { useState } from "react";
+import Request from "../helpers/request";
 
 const defaultFormData = {
   name: "",
@@ -47,20 +48,38 @@ function AddRecipe({
   };
 
   const handleImageUpload = async () => {
+    // const file = imageFile.current.files[0]; // get the file from the input element
+
+    // Create an input stream from the file using the FileReader API
+    // const fileReader = new FileReader();
+    // fileReader.readAsArrayBuffer(file);
+    // fileReader.onload = async () => {}
+    // const fileContent = new Uint8Array(fileReader.result);
+      console.log('the file state', file);
+    const request = new Request();
+      const urls3 = request.post('/api/upload', {file})
+      .then(response => response.text())
+      .then(url => {
+        console.log('Image URL:', url);
+        setImageUrl(url)});;
+  
     // get secure url from our server
-    const { url } = await fetch("/s3Url").then((res) => res.json());
+    // const { url } = await fetch("/s3Url").then((res) => res.json());
+    // const { url } = await fetch("http://localhost:8080/s3Url").then((res) => res.json());
+    console.log(urls3);
+    console.log('the image state', imageUrl);
 
     // post the image directly to the s3 bucket
-    await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
-      body: file
-    });
+    // await fetch(urls3, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   },
+    //   body: fileContent
+    // });
 
-    const imgUrl = url.split('?')[0];
-    setImageUrl(imgUrl);
+    // const imgUrl = urls3.split('?')[0];
+    // setImageUrl(imgUrl);
   };
 
   // MULTIPLE INSTRUCTIONS STEPS

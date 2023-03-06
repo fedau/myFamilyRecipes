@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,16 +44,6 @@ public class RecipeController {
     public ResponseEntity getRecipes(@PathVariable Long id){
         return new ResponseEntity<>(recipeRepo.findById(id), HttpStatus.OK);
     }
-
-//    @PostMapping(value = "/recipes")
-//    public ResponseEntity<Recipe> postRecipe(@RequestBody Recipe recipe){
-//// todo for each ingredient check if new? => save to make new ingredient
-////  save new ingredient
-////  get saved ingredient id
-////  add ingredient id to  ingredient object? recipeingredient
-//        recipeRepo.save(recipe);
-//        return new ResponseEntity<>(recipe, HttpStatus.CREATED);
-//    }
 
     @PostMapping(value = "/recipes")
     public Recipe createRecipe(@RequestBody Recipe recipe) {
