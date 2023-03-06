@@ -289,6 +289,11 @@ function AddRecipe({
             />
             <br />
             <br />
+            <button onClick={() => {
+      const newRecipeIngredients = [...recipeIngredientsData];
+      newRecipeIngredients.splice(index, 1);
+      setRecipeIngredientsData(newRecipeIngredients);
+    }}>Delete</button>
           </div>
         ))}
         <button type="button" onClick={handleAddIngredient}>
