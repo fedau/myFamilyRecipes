@@ -16,46 +16,50 @@ const EditForm = ({ recipe, onEdit }) => {
     quantity: recipe.quantity,
     ingredientsName: "",
   };
-  
-  // const existingIngredients = ingredientsState.map((ingredient) => {
-  //     return { id: ingredient.id, ingredientName: ingredient.ingredientName };
-  //   });
+
   const [formData, setFormData] = useState(defaultFormData);
+  const [ingredientsState, setIngredientState] = useState([])
   const [instructionData, setInstructionData] = useState([
-    {
-      stepNumber: recipe.instructions.stepNumber,
-      stepDescription: recipe.instructions.instructionData,
-    },
+    ...recipe.instructions
   ]);
+
+  const existingIngredients = ingredientsState.map((ingredient) => {
+    return { id: ingredient.id, ingredientName: ingredient.ingredientName };
+  });
+  const [recipeIngredients, setRecipeIngredientsRecipeId] = useState([
+
+  ]);
+  const findRecipeById = () => {
+    fetch(`/api/recipeIngredients?recipeId=${recipe.id}`)
+    .then((response) => response.json())
+    .then((data) => {
+      setRecipeIngredientsRecipeId(data);
+    })
+    .catch((error) => console.log(error));
+  };
+  useEffect(() => {
+    findRecipeById();
+  }, []);
   const [recipeIngredientsData, setRecipeIngredientsData] = useState([
-    // {
-    //   unit: recipe.unit,
-    //   ingredient: { id: recipe.ingredient.id, ingredientName: recipe.ingredient.ingredientName },
-    //   quantity: recipe.recipeIngredient.quantity,
-    // },
+    ...recipeIngredients
   ]);
-
-  // MULTIPLE INSTRUCTIONS STEPS
-  const handleStepChange = (event, index) => {
-    const newInstructions = [...instructionData];
-    newInstructions[index].stepNumber = event.target.value;
-    setInstructionData(newInstructions);
-  };
-
-  const handleDescriptionChange = (event, index) => {
-    const newInstructions = [...instructionData];
-    newInstructions[index].stepDescription = event.target.value;
-    setInstructionData(newInstructions);
-  };
-
-  const handleAddInstruction = () => {
-    const newInstructions = [
-      ...instructionData,
-      { stepNumber: 0, stepDescription: "" },
-    ];
-    setInstructionData(newInstructions);
-  };
-
+    
+    const requestAllIngredients = () => {
+      fetch(`/api/ingredients`)
+      .then((response) => response.json())
+      .then((data) => {
+        setIngredientState(data);
+      })
+      .catch((error) => console.log(error));
+    };
+    useEffect(() => {
+      requestAllIngredients()
+  }, []);
+  // when database is loading
+  if (!recipe) {
+    return "waiting on the recipe";
+  }
+  
   // ON CHANGE RECIPE FIELDS
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -64,95 +68,87 @@ const EditForm = ({ recipe, onEdit }) => {
     }));
     console.log(formData);
   };
+  const handleAddInstruction = () => {
+    const newInstructions = [
+      ...instructionData,
+      { stepNumber: 0, stepDescription: "" },
+    ];
+    setInstructionData(newInstructions);
+  };
 
+
+// ON CHANGE INGREDIENT
   const handleAddIngredient = () => {
     const newIngredient = [
-      ...recipeIngredientsData,
+      ...recipeIngredients,
       {
         unit: "",
         ingredient: { id: "", ingredientName: "" },
         quantity: 0,
       },
     ];
-    setRecipeIngredientsData(newIngredient);
+    setRecipeIngredientsRecipeId(newIngredient);
   };
-
-  // ON CHANGE INGREDIENTS
-  // const onChangeIngredients = (e, changedIngredientIndex) => {
-  //   let selectedIngredientName = e.target.value;
-  //   let selectedIngredient = existingIngredients.find(
-  //     (ingredient) => ingredient.ingredientName === selectedIngredientName
-  //   );
-  //   if (selectedIngredient === undefined) {
-  //     selectedIngredient = { ingredientName: selectedIngredientName };
-  //   }
-  //   const newRecipeIngredients = recipeIngredientsData.map(
-  //     (recipeIngredient, ingredientIndex) => {
-  //       if (ingredientIndex === changedIngredientIndex) {
-  //         console.log(selectedIngredient);
-  //         return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
-  //       }
-  //       return { ...recipeIngredient };
-  //     }
-  //   );
-  //   setRecipeIngredientsData(newRecipeIngredients);
-  // };
+  const onChangeIngredients = (e, changedIngredientIndex) => {
+    let selectedIngredientName = e.target.value;
+    let selectedIngredient = existingIngredients.find(
+      (ingredient) => ingredient.ingredientName === selectedIngredientName
+    );
+    if (selectedIngredient === undefined) {
+      selectedIngredient = { ingredientName: selectedIngredientName };
+    }
+    const newRecipeIngredients = recipeIngredients.map(
+      (recipeIngredient, ingredientIndex) => {
+        if (ingredientIndex === changedIngredientIndex) {
+          console.log(selectedIngredient);
+          return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
+        }
+        return { ...recipeIngredient };
+      }
+    );
+    setRecipeIngredientsRecipeId(newRecipeIngredients);
+  };
 
   // ON CHANGE RECIPEINGREDIENTS
   const onChangeRecipeUnit = (e, index) => {
-    const newRecipeIngredients = [...recipeIngredientsData];
+    const newRecipeIngredients = [...recipeIngredients];
     newRecipeIngredients[index].unit = e.target.value;
-    setRecipeIngredientsData(newRecipeIngredients);
+    setRecipeIngredientsRecipeId(newRecipeIngredients);
   };
 
   const onChangeRecipeQty = (e, index) => {
-    const newRecipeIngredients = [...recipeIngredientsData];
+    const newRecipeIngredients = [...recipeIngredients];
     newRecipeIngredients[index].quantity = e.target.value;
-    setRecipeIngredientsData(newRecipeIngredients);
+    setRecipeIngredientsRecipeId(newRecipeIngredients);
   };
-
-  // HANDLE IMAGE SUBMIT
-  const handleImageSubmit = async (event) => {
-    event.preventDefault();
-    const { presignedUrl } = this.state;
-    const file = this.fileInputRef.current.files[0];
-    try {
-      await fetch(presignedUrl, {
-        method: "PUT",
-        body: file,
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
-      const imageUrl = presignedUrl.split("?")[0];
-      this.setState({ imageUrl });
-    } catch (error) {
-      console.error(error);
-    }
+  // handleinstructioncahnge
+  const handleStepChange = (event, index, field) => {
+    const { value } = event.target;
+    const updatedInstructionData = [...instructionData];
+    updatedInstructionData[index] = {
+      ...updatedInstructionData[index],
+      [field]: value
+    };
+    setInstructionData(updatedInstructionData);
   };
-
-  // on submit calls handlReciepSubmit in recipeContainer
+  
+console.log(instructionData);
+  // ON SUBMIT
   const onSubmit = (e) => {
     e.preventDefault();
     const newFormData = { ...formData };
     newFormData.unit = recipeIngredientsData.unit;
     newFormData.quantity = recipeIngredientsData.quantity;
-    // const categoriesForSubmit = formData.categories.map((category) => {
-    //   const foundCategory = categories.find((c) => c.type === category);
-    //   return foundCategory;
-    // });
-    // newFormData.categories = categoriesForSubmit;
     newFormData.instructions = instructionData;
     newFormData.recipeIngredients = recipeIngredientsData;
-    console.log("submit form", newFormData);
     onEdit(newFormData);
-    // setFormData(defaultFormData);
   };
 
   return (
     <>
+ 
       <h1>Form</h1>
-      <p>Create a post</p>
+      <p>Edit this recipe</p>
 
       <form onSubmit={onSubmit}>
         {/* RECIPE INFO */}
@@ -197,105 +193,114 @@ const EditForm = ({ recipe, onEdit }) => {
         <br />
         <br />
         {/* INGREDIENTS */}
-        {/* {recipeIngredientsData.map((recipeIngredient, index) => ( */}
-        {/* <div key={index}>
-                <label htmlFor={`ingredientsName`}>ingredientsName</label>
-                <br />
-                <input
-                  type="text"
-                  id={`ingredientsName${index}`}
-                  value={instructionData.ingredientsName}
-                  onChange={(e) => onChangeIngredients(e, index)}
-                  list="ingredients"
-                />
-                <datalist id="ingredients">
-                  {existingIngredients.map((ingredient) => {
-                    return (
-                      <option key={ingredient.id} value={ingredient.ingredientName}>
-                        {ingredient.ingredientName}
-                      </option>
-                    );
-                  })}
-                </datalist>
-                <br />
-                <label htmlFor={`unit${index}`}>unit</label>
-                <br />
-                <input
-                  type="text"
-                  id={`unit${index}`}
-                  value={recipeIngredient.unit}
-                  onChange={(e) => onChangeRecipeUnit(e, index)}
-                />
-                <br />
-                <label htmlFor={`quantity${index}`}>quantity</label>
-                <br />
-                <input
-                  type="number"
-                  id={`quantity${index}`}
-                  value={recipeIngredient.quantity}
-                  onChange={(e) => onChangeRecipeQty(e, index)}
-                />
-                <br />
-                <br />
-              </div> */}
-        {/* // ) */}
-        {/* )} */}
+        {recipeIngredients.map((aRecipeIngredient,  index) => (
+          <div key={index}>
+
+            <label htmlFor={`ingredientsName`}>ingredientsName</label>
+            <br />
+            <input
+              type="text"
+              id={`ingredientsName${index}`}
+              value={aRecipeIngredient.ingredient.ingredientName}
+              onChange={(e) => onChangeIngredients(e, index)}
+              list="ingredients"
+            />
+            <datalist id="ingredients">
+              {existingIngredients.map((ingredient) => {
+                return (
+                  <option key={ingredient.id} value={ingredient.ingredientName}>
+                    {ingredient.ingredientName}
+                  </option>
+                );
+              })}
+            </datalist>
+
+            <label>ingredient unit</label>
+            
+             <input
+              type="text"
+              id={`unit${index}`}
+              value={aRecipeIngredient.unit}
+              onChange={(e) => onChangeRecipeUnit(e, index)}
+            />
+            <label>ingredient quantity</label>
+            <input
+              type="number"
+              id={`quantity${index}`}
+              value={aRecipeIngredient.quantity}
+              onChange={(e) => onChangeRecipeQty(e, index)}
+            />
+                <button onClick={() => {
+      const newRecipeIngredients = [...recipeIngredients];
+      newRecipeIngredients.splice(index, 1);
+      setRecipeIngredientsRecipeId(newRecipeIngredients);
+    }}>Delete</button>
+          </div>
+        ))}
+        
         <button type="button" onClick={handleAddIngredient}>
           Add ingredient
         </button>
-        {/*     
-            STEPS DESCRIPTION 
-            {instructionData.map((instruction, index) => (
-              <div key={index}>
-                <label>Step {index + 1}:</label>
-                <input
-                  type="number"
-                  value={instruction.stepNumber}
-                  onChange={(event) => handleStepChange(event, index)}
-                />
-                <label>Description:</label>
-                <textarea
-                  value={instruction.stepDescription}
-                  onChange={(event) => handleDescriptionChange(event, index)}
-                />
-              </div>
-            ))}
-            <button type="button" onClick={handleAddInstruction}>
-              Add Instruction
-            </button> */}
+        {/* INSTRUCTIONS */}
+{instructionData.map((instruction, index) => (
+  <div key={index}>
+    <label>stepNumber</label>
+    <input
+      type="number"
+      value={instruction.stepNumber}
+      onChange={(event) => handleStepChange(event, index, "stepNumber")}
+    />
+    <br />
+    <label>stepDescription:</label>
+    <textarea
+      type="text"
+      value={instruction.stepDescription}
+      onChange={(event) => handleStepChange(event, index, "stepDescription")}
+    />
+        <button onClick={() => {
+      const newInstructions = [...instructionData];
+      newInstructions.splice(index, 1);
+      setInstructionData(newInstructions);
+    }}>Delete</button>
+  </div>
+  
+))}
+         <button type="button" onClick={handleAddInstruction}>
+          Add Instruction
+        </button>
 
-        {/* ALL TYPES */}
-        {/* mapping through all the existing types currently in the database */}
-        {/* {categories.map((category) => (
-              <div key={category.id}>
-                <input
-                  type="checkbox"
-                  id={category.type}
-                  value={category.type}
-                  checked={formData.categories.includes(category.type)}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    const categoryType = category.type;
-                    setFormData((prevState) => {
-                      if (checked) {
-                        return {
-                          ...prevState,
-                          categories: [...prevState.categories, categoryType],
-                        };
-                      } else {
-                        return {
-                          ...prevState,
-                          categories: prevState.categories.filter(
-                            (c) => c !== categoryType
-                          ),
-                        };
-                      }
-                    });
-                  }}
-                />
-                <label htmlFor={category.type}>{category.type}</label>
-              </div>
-            ))} */}
+        {/* TYPES */}
+        {recipe.categories.map((category) => (
+          <div key={category.id}>
+            <input
+              type="checkbox"
+              id={category.type}
+              value={category.type}
+              checked={formData.categories.includes(category.type)}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                const categoryType = category.type;
+                setFormData((prevState) => {
+                  if (checked) {
+                    return {
+                      ...prevState,
+                      categories: [...prevState.categories, categoryType],
+                    };
+                  } else {
+                    return {
+                      ...prevState,
+                      categories: prevState.categories.filter(
+                        (c) => c !== categoryType
+                      ),
+                    };
+                  }
+                });
+              }}
+            />
+            <label htmlFor={category.type}>{category.type}</label>
+          </div>
+        ))}
+
         {/* ADD IMAGE */}
         <br />
         <br />
@@ -309,7 +314,8 @@ const EditForm = ({ recipe, onEdit }) => {
         />
         <br />
         <br />
-        <button type="submit">Upload post</button>
+        <button type="submit">Upload recipe</button>
+      {/* <button onClick={window.location = '/'}>cancel</button> */}
       </form>
     </>
   );
