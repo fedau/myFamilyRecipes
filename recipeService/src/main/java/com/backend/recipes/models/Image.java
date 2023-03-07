@@ -14,14 +14,8 @@ public class Image {
     private Long id;
     private String image;
 
-//    @JsonIgnoreProperties({"image"})
-//    @OneToOne
-//    @JoinColumn(name = "recipe_id", nullable = true)
-//    private Recipe recipe;
-
     public Image(String image, Recipe recipe) {
         this.image = image;
-//        this.recipe = recipe;
     }
 
     public Image(){}
@@ -41,11 +35,4 @@ public class Image {
         this.image = image;
     }
 
-//    public Recipe getRecipe() {
-//        return recipe;
-//    }
-//
-//    public void setRecipe(Recipe recipe) {
-//        this.recipe = recipe;
-//    }
 }
