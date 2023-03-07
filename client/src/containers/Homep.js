@@ -1,21 +1,41 @@
 import { useState, useEffect } from "react";
 import Recipe from "../components/Recipe";
+import { useAuth0 } from '@auth0/auth0-react'
 
-const Homep = ({recipes, categoryList}) => {
+
+const Homep = ({recipes, categoryList, handleFavorite}) => {
     const [searchInput, setSearchInput] = useState("");
+    const [favoriteSelected, setFavoriteSelected] = useState([])
     const [formData, setFormData] = useState({
       categories: [],
     });
     
-    const handleFavorite = () =>{
+    const { user } = useAuth0();
 
-    }
-    
     const handleChange = (e) => {
         e.preventDefault();
         setSearchInput(e.target.value);
     };
 
+    const handleClickFavorites = (recipe) => {
+        const sanitizedRecipeIngredients = recipe.recipeIngredients.map((ri) => {
+            const copyOfrecipeIngredients = {...ri}
+            delete copyOfrecipeIngredients.recipe
+            return copyOfrecipeIngredients
+          })
+          recipe.recipeIngredients = sanitizedRecipeIngredients
+        const data = {
+            
+          recipe: recipe,
+          userId: user.sub
+        };
+        console.log(recipe);
+        console.log(data);
+        setFavoriteSelected([...favoriteSelected, data]);
+        handleFavorite(data)
+      };
+      
+    
     useEffect(() => {
         const filteredRecipes = recipes.filter(recipe => {
             const categoryMatch = formData.categories.length === 0 ||
@@ -34,7 +54,8 @@ const Homep = ({recipes, categoryList}) => {
         <li key={index}>
           <div>
             <Recipe recipe={recipe} />
-            <button onClick={handleFavorite}>hart me</button>
+            <button onClick={() => handleClickFavorites(recipe)}>hart me</button>
+
           </div>
         </li>
       );
