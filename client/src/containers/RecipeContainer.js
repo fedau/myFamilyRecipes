@@ -7,6 +7,7 @@ import Homep from './Homep'
 import RecipeDetail from '../components/RecipeDetail'
 import EditForm from '../components/EditForm'
 import { useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
 
 const RecipeContainer = () => {
@@ -53,6 +54,9 @@ const RecipeContainer = () => {
             setCategories(data[4])
         })
     }
+    const { user } = useAuth0();
+
+// console.log("user id:", user.sub);
   
     // this wrapper for a single recipe. Takes the id out of the url and puts the id on the single recipe
     const findRecipeById = (id) => {
@@ -66,11 +70,20 @@ const RecipeContainer = () => {
         window.location = '/'
     }) 
 }
+// HANDLE DELETE
+const handleDelete = (id) => {
+    const request = new Request();
+    const url = '/api/recipes/' + id;
+
+    request.delete(url).then(() => {
+      window.location = '/';
+    })
+  }
     const RecipeDetailWrapper = () => {
         const { id } = useParams();
         //   const foundRecipe = recipes.find((recipe) => recipe.id === parseInt(id));
         let foundRecipe = findRecipeById(id)
-        return <RecipeDetail recipe={foundRecipe} />; 
+        return <RecipeDetail recipe={foundRecipe} handleDelete={handleDelete} />; 
     };
     
     const RecipeEditFormWrapper = ({ingredientsState}) => {
@@ -83,13 +96,13 @@ const RecipeContainer = () => {
     const handleRecipeSubmit = ( recipe) => {
         const request = new Request();
         request.post('/api/recipes', {...recipe})
-        .then(refreshRecipeData())
+        // .then(refreshRecipeData())
         .then(data => data.json())
         .then((data) => {
         //  navigate(`/recipes/${data.id}`)
+        
         window.location = '/'
-
-        }
+    }
         )
     }
     // const onEdit = (recipe) => {

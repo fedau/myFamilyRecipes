@@ -48,42 +48,7 @@ function AddRecipe({
   };
 
   const handleImageUpload = async () => {
-        const request = new Request();
-    // Create an input stream from the file using the FileReader API
-    const fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
-    fileReader.onload = async () => {}
-    const fileContent = new Uint8Array(fileReader.result);
-    const formData = new FormData();
-    formData.append("file", file);
-    request.put('/api/upload', fileContent)
-    .then(response => response.text())
-    .then(url => {
-      console.log('Image URL:', url);
-      setImageUrl(url)});;
-//       console.log('the file state', file);
-// const response = await request.post("/api/upload", formData);
-// const url = await response.text();
-// console.log("Image URL:", url);
-// setImageUrl(url);
-  
-    // get secure url from our server
-    // const { url } = await fetch("/s3Url").then((res) => res.json());
-    // const { url } = await fetch("http://localhost:8080/s3Url").then((res) => res.json());
-    // console.log(urls3);
-    console.log('the image state', imageUrl);
-
-    // post the image directly to the s3 bucket
-    // await fetch(urls3, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   },
-    //   body: fileContent
-    // });
-
-    // const imgUrl = urls3.split('?')[0];
-    // setImageUrl(imgUrl);
+       
   };
 
   // MULTIPLE INSTRUCTIONS STEPS
@@ -195,7 +160,7 @@ function AddRecipe({
     newFormData.categories = categoriesForSubmit;
     newFormData.instructions = instructionData;
     newFormData.recipeIngredients = recipeIngredientsData;
-    newFormData.image = imageUrl;
+    // newFormData.image = imageUrl;
     console.log(newFormData);
     handleRecipeSubmit(newFormData);
     setFormData(defaultFormData);

@@ -2,6 +2,8 @@ import { useState } from "react";
 import Recipe from "../components/Recipe";
 
 const Homep = ({recipes, categoryList}) => {
+    const [searchInput, setSearchInput] = useState("");
+
 
     const handleFavorite = () =>{
 
@@ -14,6 +16,8 @@ const Homep = ({recipes, categoryList}) => {
         recipe.categories.map(category => category.type)
         .some(categoryType => formData.categories.includes(categoryType)))
     : recipes;
+
+    
   
     const recipeElements = filteredRecipes.map((recipe, index) => {
       return (
@@ -25,9 +29,26 @@ const Homep = ({recipes, categoryList}) => {
         </li>
       );
     });
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        setSearchInput(e.target.value);
+      };
+      
+      if (searchInput.length > 0) {
+          recipes.filter((recipe) => {
+          return recipe.name.match(searchInput);
+      });
+      }
   
     return (
       <>
+      <input
+   type="text"
+   placeholder="Search here"
+   onChange={handleChange}
+   value={searchInput} />
+   {}
         <form>
           {categoryList ? (
             categoryList.map((category) => (

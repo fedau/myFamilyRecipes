@@ -8,7 +8,7 @@ import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { RecipeIngredientQuantity,  RecipeData } from '../interfaces';
 
-const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
+const RecipeDetail = ({ recipe, handleDelete }: { recipe: RecipeData, handleDelete: any}) => {
   const navigate = useNavigate()
 
 // state for recipeIngredient and fetch request to find ingredients linked to recipe Id
@@ -34,6 +34,9 @@ const RecipeDetail = ({ recipe }: { recipe: RecipeData}) => {
     return "waiting on the recipe"
 }
 
+const onDelete = () => {
+  handleDelete(recipe.id)
+}
 
 const onEdit = () => {
   navigate(`/${recipe.id}/edit`)
@@ -74,7 +77,7 @@ const onEdit = () => {
         </ul>
       ))}
     </div> 
-
+    <button onClick={onDelete}>Delete this recipe </button>
 <button onClick={onEdit}> Edit this recipe</button>
 
     </>

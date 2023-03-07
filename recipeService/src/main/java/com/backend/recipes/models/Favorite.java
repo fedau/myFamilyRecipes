@@ -12,6 +12,18 @@ public class Favorite {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
+    private String user_id;
 
+    public Favorite(Recipe recipe) {
+        this.recipe = recipe;
+        this.user_id = user_id;
+    }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 }

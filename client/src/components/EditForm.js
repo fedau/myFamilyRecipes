@@ -109,7 +109,7 @@ const EditForm = ({ recipe, onEdit }) => {
     setRecipeIngredientsRecipeId(newRecipeIngredients);
   };
 
-  // ON CHANGE RECIPEINGREDIENTS
+  // ON CHANGE RECIPE INGREDIENTS
   const onChangeRecipeUnit = (e, index) => {
     const newRecipeIngredients = [...recipeIngredients];
     newRecipeIngredients[index].unit = e.target.value;
@@ -137,10 +137,15 @@ console.log(instructionData);
   const onSubmit = (e) => {
     e.preventDefault();
     const newFormData = { ...formData };
-    newFormData.unit = recipeIngredientsData.unit;
-    newFormData.quantity = recipeIngredientsData.quantity;
+    newFormData.unit = recipeIngredients.unit;
+    newFormData.quantity = recipeIngredients.quantity;
     newFormData.instructions = instructionData;
-    newFormData.recipeIngredients = recipeIngredientsData;
+    const sanitizedRecipeIngredients = recipeIngredients.map((ri) => {
+      const copyOfrecipeIngredients = {...ri}
+      delete copyOfrecipeIngredients.recipe
+      return copyOfrecipeIngredients
+    })
+    newFormData.recipeIngredients = sanitizedRecipeIngredients;
     onEdit(newFormData);
   };
 

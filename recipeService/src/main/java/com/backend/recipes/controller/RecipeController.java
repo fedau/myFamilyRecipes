@@ -84,13 +84,19 @@ public class RecipeController {
         existingRecipe.setDescription(recipe.getDescription());
         existingRecipe.setCookingTime(recipe.getCookingTime());
         existingRecipe.setServings(recipe.getServings());
+        existingRecipe.setInstructions(recipe.getInstructions());
+//        existingRecipe.addRecipeIngredient((RecipeIngredient) recipe.getRecipeIngredients());
 
         recipeRepo.save(existingRecipe);
-
         return new ResponseEntity<>(existingRecipe, HttpStatus.OK);
     }
 
-
+    @DeleteMapping(value = "/recipes/{id}")
+    public ResponseEntity<Recipe> deleteRecipe(@PathVariable Long id) {
+        Optional<Recipe> recipeToDelete = recipeRepo.findById(id);
+        recipeRepo.delete(recipeToDelete.get());
+        return new ResponseEntity<>(recipeToDelete.get(), HttpStatus.OK);
+    }
 
 
 }
