@@ -5,6 +5,9 @@ import Loading from "../components/Loading";
 import { useState } from "react";
 import Request from "../helpers/request";
 
+import handleFileUpload from "../aws/s3_upload";
+import UploadImage from "../components/uploadImage";
+
 const defaultFormData = {
   name: "",
   description: "",
@@ -38,7 +41,7 @@ function AddRecipe({
       quantity: 0,
     },
   ]);
-// state for images
+  // state for images
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -47,8 +50,13 @@ function AddRecipe({
     setFile(e.target.files[0]);
   };
 
-  const handleImageUpload = async () => {
-       
+  const handleImageUpload = async () => {};
+
+  const handleCoverImage = async (file) => {
+    setImageUrl(file);
+
+    // const imageUrl = await handleFileUpload(file);
+    // setCoverImage(imageUrl);
   };
 
   // MULTIPLE INSTRUCTIONS STEPS
@@ -145,7 +153,6 @@ function AddRecipe({
       console.error(error);
     }
   };
-  
 
   // on submit calls handlReciepSubmit in recipeContainer
   const onSubmit = (e) => {
@@ -160,7 +167,7 @@ function AddRecipe({
     newFormData.categories = categoriesForSubmit;
     newFormData.instructions = instructionData;
     newFormData.recipeIngredients = recipeIngredientsData;
-    // newFormData.image = imageUrl;
+    newFormData.image = imageUrl;
     console.log(newFormData);
     handleRecipeSubmit(newFormData);
     setFormData(defaultFormData);
@@ -254,11 +261,15 @@ function AddRecipe({
             />
             <br />
             <br />
-            <button onClick={() => {
-      const newRecipeIngredients = [...recipeIngredientsData];
-      newRecipeIngredients.splice(index, 1);
-      setRecipeIngredientsData(newRecipeIngredients);
-    }}>Delete</button>
+            <button
+              onClick={() => {
+                const newRecipeIngredients = [...recipeIngredientsData];
+                newRecipeIngredients.splice(index, 1);
+                setRecipeIngredientsData(newRecipeIngredients);
+              }}
+            >
+              Delete
+            </button>
           </div>
         ))}
         <button type="button" onClick={handleAddIngredient}>
@@ -318,24 +329,17 @@ function AddRecipe({
           </div>
         ))}
         <br />
-        {/* <br />
-        <label htmlFor="image">image</label>
-        <br />
-        <input
-          type="text"
-          id="image"
-          value={formData.image}
-          onChange={onChange}
-        /> */}
 
         {/* ADD IMAGE */}
 
-        {imageUrl && <img src={imageUrl} alt="preview" />}
+        <UploadImage onUpload={handleCoverImage} />
+
+        {/* {imageUrl && <img src={imageUrl} alt="preview" />}
         <br />
         <input type="file" accept="image/*" onChange={handleFileInputChange} />
         <button type="button" onClick={handleImageUpload} disabled={!file}>
           Upload Image
-        </button>
+        </button> */}
         <br />
         <button type="submit">Upload recipe</button>
       </form>
