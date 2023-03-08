@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Recipe from "../components/Recipe";
 import { useAuth0 } from '@auth0/auth0-react'
+import '../css/Homep.css'
+import '../css/CardEffect.scss'
 
 
 const Homep = ({recipes, categoryList, handleFavorite}) => {
@@ -10,13 +12,13 @@ const Homep = ({recipes, categoryList, handleFavorite}) => {
       categories: [],
     });
     
-    const { user } = useAuth0();
-
+    
     const handleChange = (e) => {
         e.preventDefault();
         setSearchInput(e.target.value);
     };
-
+    
+    const { user } = useAuth0();
     const handleClickFavorites = (recipe) => {
         const sanitizedRecipeIngredients = recipe.recipeIngredients.map((ri) => {
             const copyOfrecipeIngredients = {...ri}
@@ -51,13 +53,13 @@ const Homep = ({recipes, categoryList, handleFavorite}) => {
 
     const recipeElements = filteredRecipes.map((recipe, index) => {
       return (
-        <li key={index}>
-          <div>
-            <Recipe recipe={recipe} />
-            <button onClick={() => handleClickFavorites(recipe)}>hart me</button>
+
+          <div key={index} className="module">
+            <Recipe recipe={recipe} handleFavorite={handleFavorite}/>
+            {/* <button className="content" onClick={() => handleClickFavorites(recipe)}>hart me</button> */}
 
           </div>
-        </li>
+
       );
     });
 
@@ -73,7 +75,8 @@ const Homep = ({recipes, categoryList, handleFavorite}) => {
       <form>
         {categoryList ? (
           categoryList.map((category) => (
-            <div key={category.id}>
+            <div key={category.id} className="SearchBar"
+            >
               <input
                 type="checkbox"
                 id={category.type}
@@ -106,12 +109,17 @@ const Homep = ({recipes, categoryList, handleFavorite}) => {
           <p>Loading categories...</p>
         )}
       </form>
+      {/* <div className="page-content"> */}
 
-      <div>
-        <ul>
+
+      <div className="grid">
+
+
           {recipeElements}
-        </ul>
-      </div>
+
+            
+      {/* </div> */}
+        </div>
       </>
     );
   };

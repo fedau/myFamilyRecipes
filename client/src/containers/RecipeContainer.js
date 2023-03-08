@@ -18,6 +18,7 @@ const RecipeContainer = () => {
     const [ instructions, setInstructions] = useState([])
     const [recipeIngredients, setRecipeIngredients] = useState([])
     const [categories, setCategories] = useState([])
+    const [ favoriteRecipes, setFavoriteRecipes] = useState([])
 
     useEffect(() => {
         const request = new Request();
@@ -26,14 +27,16 @@ const RecipeContainer = () => {
         const instructionsPromise = request.get('/api/instructions');
         const recipe_ingredientsPromise = request.get('/api/recipeIngredients');
         const categoriesPromise = request.get('/api/categories')
+        const favoritespromise = request.get('/api/favorites')
 
-        Promise.all([RecipePromise, ingredientsPromise, instructionsPromise, recipe_ingredientsPromise, categoriesPromise])
+        Promise.all([RecipePromise, ingredientsPromise, instructionsPromise, recipe_ingredientsPromise, categoriesPromise, favoritespromise])
         .then((data) => {
             setRecipes(data[0])
             setIngredients(data[1])
             setInstructions(data[2])
             setRecipeIngredients(data[3])
             setCategories(data[4])
+            setFavoriteRecipes(data[5])
         })
     }, [])
 
@@ -69,6 +72,13 @@ const RecipeContainer = () => {
      request.put(`/api/recipes/${recipe.id}`, recipe).then(() => {
         window.location = '/'
     }) 
+}
+
+// HANDLE FAVORITES
+const handleFavorite = (favorites) =>{
+    const request = new Request();
+    request.post(`/api/favorites`, favorites)
+
 }
 // HANDLE DELETE
 const handleDelete = (id) => {
@@ -115,8 +125,8 @@ const handleDelete = (id) => {
           <>
 
     <Routes>
-        <Route path='/' element={<Homep recipes={recipes} categoryList={categories}  />}/>
-        <Route path='/favorites' element={<Favourites recipes={recipes}/>}/>
+        <Route path='/' element={<Homep recipes={recipes} categoryList={categories} handleFavorite={handleFavorite} />}/>
+        <Route path='/favorites' element={<Favourites />}/>
         <Route path='/:id/edit' element={ <RecipeEditFormWrapper  /> } />
         <Route path='/add' element={<AddRecipe recipes={recipes} categoryList={categories} instructions={instructions} ingredientsState={ingredientsState} handleRecipeSubmit={handleRecipeSubmit}/>}/>
         <Route path="/recipes/:id" element={<RecipeDetailWrapper />} />

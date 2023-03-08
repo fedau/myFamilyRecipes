@@ -16,15 +16,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
     padding: 1em;
   }
  .desktop .ingredients{
-    /* margin: 0;
-    padding: 0; */
-    width: 50%;
-    height: 100%;
-
+ 
   }
   .header {
     height: 5vw;
@@ -38,7 +34,7 @@
   .desktop {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
   }
 
   .instructions{

@@ -24,16 +24,19 @@ const AnotherBar = () => {
 
   return (
     <div className="Navbar">
+      <div className='logoR'>
       <RouterNavLink to="/" exact> <img src={logo} alt='logo' /> </RouterNavLink>
 
                 <RouterNavLink
                   to="/"
                   exact
                   className="Magnet"
-                >
+                  >
                   Recipes
                 </RouterNavLink>
 
+                  </div>
+                  
 
               
            {/* If not authenticated display log in button */}
