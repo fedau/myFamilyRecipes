@@ -323,25 +323,11 @@ const EditForm = ({ recipe, onEdit }) => {
               <label htmlFor={category.type}>{category.type}</label>
             </div>
           ))}
-
           {/* ADD IMAGE */}
           <UploadImage onUpload={handleCoverImage} />
-
-          {/*     
-
-        <label htmlFor="image">image</label>
-
-        <input
-          type="text"
-          id="image"
-          value={formData.image}
-          onChange={onChange}
-        /> */}
-
           <button className={"button"} type="submit">
             Upload recipe
           </button>
-          {/* <button onClick={window.location = '/'}>cancel</button> */}
         </form>
       </div>
     </>

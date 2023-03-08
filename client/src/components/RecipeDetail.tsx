@@ -118,6 +118,7 @@ const RecipeDetail = ({
         </div>
       </div>
     </>
+
   );
 };
 
