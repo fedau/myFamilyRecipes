@@ -2,6 +2,9 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Request from "../helpers/request";
+import '../css/form.scss'
+import UploadImage from "../components/uploadImage";
+
 
 const EditForm = ({ recipe, onEdit }) => {
   const defaultFormData = {
@@ -22,6 +25,7 @@ const EditForm = ({ recipe, onEdit }) => {
   const [instructionData, setInstructionData] = useState([
     ...recipe.instructions
   ]);
+  const [imageUrl, setImageUrl] = useState(recipe.image);
 
   const existingIngredients = ingredientsState.map((ingredient) => {
     return { id: ingredient.id, ingredientName: ingredient.ingredientName };
@@ -66,7 +70,7 @@ const EditForm = ({ recipe, onEdit }) => {
       ...prevState,
       [e.target.id]: e.target.value,
     }));
-    console.log(formData);
+
   };
   const handleAddInstruction = () => {
     const newInstructions = [
@@ -100,7 +104,7 @@ const EditForm = ({ recipe, onEdit }) => {
     const newRecipeIngredients = recipeIngredients.map(
       (recipeIngredient, ingredientIndex) => {
         if (ingredientIndex === changedIngredientIndex) {
-          console.log(selectedIngredient);
+
           return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
         }
         return { ...recipeIngredient };
@@ -131,8 +135,13 @@ const EditForm = ({ recipe, onEdit }) => {
     };
     setInstructionData(updatedInstructionData);
   };
+
+  const handleCoverImage = async (file) => {
+    setImageUrl(file);
+
+  };
   
-console.log(instructionData);
+
   // ON SUBMIT
   const onSubmit = (e) => {
     e.preventDefault();
@@ -145,64 +154,60 @@ console.log(instructionData);
       delete copyOfrecipeIngredients.recipe
       return copyOfrecipeIngredients
     })
+    newFormData.image = imageUrl;
     newFormData.recipeIngredients = sanitizedRecipeIngredients;
     onEdit(newFormData);
   };
 
   return (
     <>
- 
+        <div className="bodyForm">
       <h1>Form</h1>
       <p>Edit this recipe</p>
 
-      <form onSubmit={onSubmit}>
+      <form className="form" onSubmit={onSubmit}>
         {/* RECIPE INFO */}
         <label htmlFor="name">Title</label>
-        <br />
+
         <input
           type="text"
           id="name"
           value={formData.name}
           onChange={onChange}
         />
-        <br />
-        <br />
+
         <label htmlFor="description">description</label>
-        <br />
+
         <input
           type="text"
           id="description"
           value={formData.description}
           onChange={onChange}
         />
-        <br />
-        <br />
+    
         <label htmlFor="servings">servings</label>
-        <br />
+
         <input
           type="number"
           id="servings"
           value={formData.servings}
           onChange={onChange}
         />
-        <br />
-        <br />
+   
         <label htmlFor="cookingTime">cookingTime</label>
-        <br />
+
         <input
           type="number"
           id="cookingTime"
           value={formData.cookingTime}
           onChange={onChange}
         />
-        <br />
-        <br />
+   
         {/* INGREDIENTS */}
         {recipeIngredients.map((aRecipeIngredient,  index) => (
           <div key={index}>
 
             <label htmlFor={`ingredientsName`}>ingredientsName</label>
-            <br />
             <input
               type="text"
               id={`ingredientsName${index}`}
@@ -243,7 +248,7 @@ console.log(instructionData);
           </div>
         ))}
         
-        <button type="button" onClick={handleAddIngredient}>
+        <button className={'button'}  type="button" onClick={handleAddIngredient}>
           Add ingredient
         </button>
         {/* INSTRUCTIONS */}
@@ -270,7 +275,7 @@ console.log(instructionData);
   </div>
   
 ))}
-         <button type="button" onClick={handleAddInstruction}>
+         <button type="button" className={'button'} onClick={handleAddInstruction}>
           Add Instruction
         </button>
 
@@ -307,21 +312,24 @@ console.log(instructionData);
         ))}
 
         {/* ADD IMAGE */}
-        <br />
-        <br />
+        <UploadImage onUpload={handleCoverImage} />
+
+{/*     
+
         <label htmlFor="image">image</label>
-        <br />
+
         <input
           type="text"
           id="image"
           value={formData.image}
           onChange={onChange}
-        />
-        <br />
-        <br />
-        <button type="submit">Upload recipe</button>
+        /> */}
+     
+        <button className={'button'} type="submit">Upload recipe</button>
       {/* <button onClick={window.location = '/'}>cancel</button> */}
       </form>
+    </div>
+
     </>
   );
 };

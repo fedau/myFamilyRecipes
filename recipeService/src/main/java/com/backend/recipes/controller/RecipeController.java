@@ -85,6 +85,7 @@ public class RecipeController {
         existingRecipe.setCookingTime(recipe.getCookingTime());
         existingRecipe.setServings(recipe.getServings());
         existingRecipe.setInstructions(recipe.getInstructions());
+        existingRecipe.setImage(recipe.getImage());
 //        existingRecipe.addRecipeIngredient((RecipeIngredient) recipe.getRecipeIngredients());
 
         recipeRepo.save(existingRecipe);
