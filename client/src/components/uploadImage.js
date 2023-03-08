@@ -18,14 +18,12 @@ const UploadImage = ({ onUpload }) => {
           Profile image*
         </label> */}
         <div className="">
-          <label
-            htmlFor="file"
-            className=""
-          >
+          <label htmlFor="file" className="">
             <div className="">
               <p>Upload an image here</p>
             </div>
             <input
+              style={{ cursor: "pointer" }}
               id="file"
               accept="image/png, image/jpeg"
               onChange={handleUpload}

@@ -34,19 +34,19 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public  void run(ApplicationArguments args){
-        Recipe waffles = new Recipe("Waffles a la oma", "Little Waffles made to keep for a while.", 60, 50);
+        Recipe waffles = new Recipe("Waffles a la oma", "Little Waffles made to keep for a while. Just like Oma Paula would make", 60, 50);
         recipeRepo.save(waffles);
 
-        Recipe flensjes = new Recipe("Pancakes a la oma", "These pancakes are also known as flensjes.", 30, 10);
+        Recipe flensjes = new Recipe("Pancakes a la oma", "These pancakes are also known as flensjes. Just like Oma Paula would make", 30, 10);
         recipeRepo.save(flensjes);
 
-        Recipe ramen = new Recipe("Ramen", "Warm brothy vibes", 15, 2);
+        Recipe ramen = new Recipe("Ramen", "Warm brothy vibes. Perfect for a cold night.", 15, 2);
         recipeRepo.save(ramen);
 
-        Recipe cereal = new Recipe("Cereal", "sweet cruch", 5, 1);
+        Recipe cereal = new Recipe("Cereal", "Sweet crunch. You know How it is", 5, 1);
         recipeRepo.save(cereal);
 
-        Recipe grapees = new Recipe("Grapes", "just grapes", 1, 1);
+        Recipe grapees = new Recipe("Grapes", "Nothing but grapes", 1, 1);
         recipeRepo.save(grapees);
 
         Ingredient cocopuffs = new Ingredient("CocoPuffs");
@@ -201,6 +201,10 @@ public class DataLoader implements ApplicationRunner {
 
         Category vegetarian = new Category("vegetarian");
         categoryRepo.save(vegetarian);
+        Category reinert = new Category("Reinert Family");
+        categoryRepo.save(reinert);
+        Category depraetere = new Category("Depraetere Family");
+        categoryRepo.save(depraetere);
 
 //        Image forWaffle = new Image("https://images.pexels.com/photos/4109465/pexels-photo-4109465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", waffles);
 //        imageRepo.save(forWaffle);
@@ -209,14 +213,14 @@ public class DataLoader implements ApplicationRunner {
         grapees.addCategory(quick);
         recipeRepo.save(grapees);
 
-
+ramen.addCategory(reinert);
         ramen.addCategory(vegetarian);
         ramen.addCategory(quick);
         recipeRepo.save(ramen);
 
         cereal.addCategory(breakfast);
         recipeRepo.save(cereal);
-
+waffles.addCategory(depraetere);
         waffles.addCategory(dessert);
         waffles.addCategory(family);
         dessert.addRecipe(waffles);
@@ -224,6 +228,7 @@ public class DataLoader implements ApplicationRunner {
 //        categroyRepo.save(dessert);
 
 
+        flensjes.addCategory(depraetere);
         flensjes.addCategory(dessert);
         flensjes.addCategory(quick);
         flensjes.addCategory(family);

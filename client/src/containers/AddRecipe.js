@@ -2,7 +2,7 @@ import React from "react";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import Loading from "../components/Loading";
 import { useState } from "react";
-import '../css/form.scss'
+import "../css/form.scss";
 
 import UploadImage from "../components/uploadImage";
 
@@ -52,7 +52,6 @@ function AddRecipe({
 
   const handleCoverImage = async (file) => {
     setImageUrl(file);
-
   };
 
   // MULTIPLE INSTRUCTIONS STEPS
@@ -108,7 +107,6 @@ function AddRecipe({
     const newRecipeIngredients = recipeIngredientsData.map(
       (recipeIngredient, ingredientIndex) => {
         if (ingredientIndex === changedIngredientIndex) {
-          console.log(selectedIngredient);
           return { ...recipeIngredient, ingredient: { ...selectedIngredient } };
         }
         return { ...recipeIngredient };
@@ -160,24 +158,24 @@ function AddRecipe({
       const foundCategory = categoryList.find((c) => c.type === category);
       return foundCategory;
     });
+
     newFormData.categories = categoriesForSubmit;
     newFormData.instructions = instructionData;
     newFormData.recipeIngredients = recipeIngredientsData;
     newFormData.image = imageUrl;
-    console.log(newFormData);
+
     handleRecipeSubmit(newFormData);
     setFormData(defaultFormData);
   };
 
   return (
     <>
-    <div className="bodyForm">
-      
+      <div className="bodyForm">
         {/* <h1>Form</h1> */}
         <h2>Create a Recipe</h2>
         <form className="form" onSubmit={onSubmit}>
           {/* RECIPE INFO */}
-          <label htmlFor="name">Title</label>
+          <label htmlFor="name">Recipe Title</label>
 
           <input
             type="text"
@@ -185,8 +183,8 @@ function AddRecipe({
             value={formData.name}
             onChange={onChange}
           />
-      
-          <label htmlFor="description">description</label>
+
+          <label htmlFor="description">Short description</label>
 
           <input
             type="text"
@@ -195,7 +193,7 @@ function AddRecipe({
             onChange={onChange}
           />
 
-          <label htmlFor="servings">servings</label>
+          <label htmlFor="servings">Serving size</label>
 
           <input
             type="number"
@@ -203,8 +201,8 @@ function AddRecipe({
             value={formData.servings}
             onChange={onChange}
           />
-       
-          <label htmlFor="cookingTime">cookingTime</label>
+
+          <label htmlFor="cookingTime">Cooking Time in minutes</label>
 
           <input
             type="number"
@@ -212,11 +210,11 @@ function AddRecipe({
             value={formData.cookingTime}
             onChange={onChange}
           />
-         
+
           {/* INGREDIENTS */}
           {recipeIngredientsData.map((recipeIngredient, index) => (
             <div key={index}>
-              <label htmlFor={`ingredientsName`}>ingredientsName</label>
+              <label htmlFor={`ingredientsName`}>Ingredient Name</label>
 
               <input
                 type="text"
@@ -228,14 +226,17 @@ function AddRecipe({
               <datalist id="ingredients">
                 {existingIngredients.map((ingredient) => {
                   return (
-                    <option key={ingredient.id} value={ingredient.ingredientName}>
+                    <option
+                      key={ingredient.id}
+                      value={ingredient.ingredientName}
+                    >
                       {ingredient.ingredientName}
                     </option>
                   );
                 })}
               </datalist>
 
-              <label htmlFor={`unit${index}`}>unit</label>
+              <label htmlFor={`unit${index}`}>unit e.g grams, ml...</label>
 
               <input
                 type="text"
@@ -244,7 +245,7 @@ function AddRecipe({
                 onChange={(e) => onChangeRecipeUnit(e, index)}
               />
 
-              <label htmlFor={`quantity${index}`}>quantity</label>
+              <label htmlFor={`quantity${index}`}>amount</label>
 
               <input
                 type="number"
@@ -253,6 +254,7 @@ function AddRecipe({
                 onChange={(e) => onChangeRecipeQty(e, index)}
               />
               <button
+                style={{ cursor: "pointer" }}
                 onClick={() => {
                   const newRecipeIngredients = [...recipeIngredientsData];
                   newRecipeIngredients.splice(index, 1);
@@ -263,12 +265,16 @@ function AddRecipe({
               </button>
             </div>
           ))}
-          <button type="button"  className={'button'}  onClick={handleAddIngredient}>
+          <button
+            type="button"
+            className={"button"}
+            style={{ cursor: "pointer" }}
+            onClick={handleAddIngredient}
+          >
             Add ingredient
           </button>
           {/* STEPS DESCRIPTION  */}
           <div className="inputBoxWrapper">
-            
             {instructionData.map((instruction, index) => (
               <div key={index}>
                 <label>Step {index + 1}:</label>
@@ -277,57 +283,70 @@ function AddRecipe({
                   value={instruction.stepNumber}
                   onChange={(event) => handleStepChange(event, index)}
                 />
-                <label>Description:</label>
+                <label>Recipe Instruction:</label>
                 <textarea
                   value={instruction.stepDescription}
                   onChange={(event) => handleDescriptionChange(event, index)}
                 />
               </div>
             ))}
-            
           </div>
-          <button type="button" className={'button'}  onClick={handleAddInstruction}>
+          <button
+            type="button"
+            className={"button"}
+            style={{ cursor: "pointer" }}
+            onClick={handleAddInstruction}
+          >
             Add Instruction
           </button>
           {/* ALL TYPES */}
           {/* mapping through all the existing types currently in the database */}
+          <h3>Select all the categories that apply</h3>
           {categoryList.map((category) => (
             <div key={category.id}>
               <label htmlFor={category.type}>
-              <input
-                type="checkbox"
-                name="checkbox"
-                id={category.type}
-                value={category.type}
-                checked={formData.categories.includes(category.type)}
-                onChange={(e) => {
-                  const checked = e.target.checked;
-                  const categoryType = category.type;
-                  setFormData((prevState) => {
-                    if (checked) {
-                      return {
-                        ...prevState,
-                        categories: [...prevState.categories, categoryType],
-                      };
-                    } else {
-                      return {
-                        ...prevState,
-                        categories: prevState.categories.filter(
-                          (c) => c !== categoryType
-                        ),
-                      };
-                    }
-                  });
-                }}
-              />  {category.type} </label>
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  id={category.type}
+                  value={category.type}
+                  checked={formData.categories.includes(category.type)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    const categoryType = category.type;
+                    setFormData((prevState) => {
+                      if (checked) {
+                        return {
+                          ...prevState,
+                          categories: [...prevState.categories, categoryType],
+                        };
+                      } else {
+                        return {
+                          ...prevState,
+                          categories: prevState.categories.filter(
+                            (c) => c !== categoryType
+                          ),
+                        };
+                      }
+                    });
+                  }}
+                />{" "}
+                {category.type}{" "}
+              </label>
             </div>
           ))}
 
           {/* ADD IMAGE */}
           <UploadImage onUpload={handleCoverImage} />
-          <button className={'button'} type="submit">Upload recipe</button>
+          <button
+            className={"button"}
+            type="submit"
+            style={{ cursor: "pointer" }}
+          >
+            Upload this recipe recipe
+          </button>
         </form>
-    </div>
+      </div>
     </>
   );
 }

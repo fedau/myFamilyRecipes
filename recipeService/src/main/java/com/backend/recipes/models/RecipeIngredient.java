@@ -48,7 +48,7 @@ public class RecipeIngredient {
     }
 
     public void setQuantity(double quantity) {
-        quantity = quantity;
+        this.quantity = quantity;
     }
 
     public String getUnit() {

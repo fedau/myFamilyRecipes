@@ -1,19 +1,15 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import AnotherBar from './components/NavBar';
-import RecipeContainer from './containers/RecipeContainer';
-
+import AnotherBar from "./components/NavBar";
+import RecipeContainer from "./containers/RecipeContainer";
 
 function App() {
-
-
-
   return (
-<Router>
-  <AnotherBar/>
-  <RecipeContainer/>
-</Router>
+    <Router>
+      <AnotherBar />
+      <RecipeContainer />
+    </Router>
   );
 }
 
