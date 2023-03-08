@@ -1,0 +1,97 @@
+/* Demo Specific Styles */
+.bodyRecipe {
+    margin: 0 auto;
+    max-width: 56em;
+    padding: 1em 0;
+    background: #eaeaea;
+
+  }
+  
+  .header,
+  .image,
+  .description,
+  .instruction,
+  .ingredients {
+    /* background: #eaeaea; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+  }
+ .desktop .ingredients{
+    /* margin: 0;
+    padding: 0; */
+    width: 50%;
+    height: 100%;
+
+  }
+  .header {
+    height: 5vw;
+  }
+  
+  .image > img {
+    width: 300px;
+  height: 400px;
+  }
+  
+  .desktop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .instructions{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    /* gap: 15px; */
+  }
+  
+  .desktop > div {
+    margin: 0 1em;
+  }
+  
+  .desktop .description {
+    /* text-align: center; */
+    height: 100%;
+  }
+  
+  .desktop .instruction {
+    width: 50%;
+    /* text-align: left; */
+  }
+
+  .desktop .Magnet{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+  }
+  
+  @media only screen and (max-width: 750px) {
+    .header,
+    .image,
+    .description,
+    .instruction,
+    .ingredients {
+      padding: 0.5em;
+    }
+  
+    .image > img {
+        width: 300px;
+      height: 400px;
+      }
+    .desktop {
+      display: block;
+    }
+  
+    .desktop > div {
+      margin: 1em 0;
+    }
+  
+    .desktop .instruction {
+      width: 100%;
+    }
+  }
+  
