@@ -48,9 +48,9 @@ public class RecipeController {
     @PostMapping(value = "/recipes")
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         for (RecipeIngredient recipeIngredient : recipe.getRecipeIngredients()) {
-            Optional<Ingredient> optionalIngredient = ingredientRepository.findByIngredientNameIgnoreCase(recipeIngredient.getIngredient().getIngredientName());
-            if (optionalIngredient.isPresent()) {
-                recipeIngredient.setIngredient(optionalIngredient.get());
+            List<Ingredient> optionalIngredient = ingredientRepository.findByIngredientNameContainingIgnoreCase(recipeIngredient.getIngredient().getIngredientName());
+            if (optionalIngredient.size() > 0) {
+                recipeIngredient.setIngredient(optionalIngredient.get(0));
             } else {
                 Ingredient newIngredient = new Ingredient();
                 newIngredient.setIngredientName(recipeIngredient.getIngredient().getIngredientName());
