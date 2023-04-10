@@ -17,12 +17,12 @@ const AnotherBar = () => {
   return (
     <div className="Navbar">
       <div className="logoR">
-        <RouterNavLink to="/" exact>
+        <RouterNavLink to="/" exact="true">
           {" "}
           <img src={logo} alt="logo" />{" "}
         </RouterNavLink>
 
-        <RouterNavLink to="/" exact className="Magnet">
+        <RouterNavLink to="/" exact="true" className="Magnet">
           Recipes
         </RouterNavLink>
       </div>

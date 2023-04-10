@@ -52,8 +52,8 @@ const Homep = ({ recipes, categoryList, handleFavorite }) => {
 
       <form>
         {categoryList ? (
-          categoryList.map((category) => (
-            <div className="categoriesWrapper">
+          categoryList.map((category, index) => (
+            <div key={index} className="categoriesWrapper">
               <div key={category.id} className="SearchBar">
                 <input
                   type="checkbox"

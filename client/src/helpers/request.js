@@ -20,14 +20,6 @@ class Request {
     });
   }
 
-  // post(url, payload){
-  //     return fetch(url, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: payload
-  //     })
-  // }
-
   put(url, payload) {
     return fetch(url, {
       method: "PUT",

@@ -1,7 +1,5 @@
 package com.backend.recipes.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +16,9 @@ public class Image {
         this.image = image;
     }
 
-    public Image(){}
+    public Image() {
+    }
+
     public Long getId() {
         return id;
     }

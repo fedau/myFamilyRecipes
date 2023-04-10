@@ -1,41 +1,51 @@
 import { useState } from "react";
-import handleFileUpload from "../aws/s3_upload";
 
 const UploadImage = ({ onUpload }) => {
   const [uploaded, setUploaded] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
 
   const handleUpload = async (event) => {
-    const file = event.target.files[0];
-    const uploadUrl = await handleFileUpload(file);
+    const formData = new FormData();
+    formData.append('image', event.target.files[0]);
+
     setUploaded(true);
-    onUpload(uploadUrl);
+    onUpload(
+      await fetch("/api/images", {
+        method: "POST",
+        body: formData
+      })
+        .then((response) => response.text())
+        .then(body => {
+          // Use the body value here
+          console.log(body)
+          setImageUrl(body)
+        })
+    );
   };
 
   return (
-    <>
-      <div className="">
-        {/* <label htmlFor="email" className="text-sm font-medium text-slate-800">
-          Profile image*
-        </label> */}
-        <div className="">
-          <label htmlFor="file" className="">
-            <div className="">
-              <p>Upload an image here</p>
-            </div>
-            <input
-              style={{ cursor: "pointer" }}
-              id="file"
-              accept="image/png, image/jpeg"
-              onChange={handleUpload}
-              type="file"
-              className="hidden"
-            />
-          </label>
-        </div>
+    <div>
+      <div>
+        <label htmlFor="file">
+          <div>
+            <p>Upload an image here</p>
+          </div>
+          <input
+            style={{ cursor: "pointer" }}
+            id="file"
+            accept="image/png, image/jpeg"
+            onChange={handleUpload}
+            type="file"
+            className="hidden"
+          />
+        </label>
       </div>
+      {imageUrl &&
+        <img alt="review upload" src={imageUrl} />
+      }
 
-      {uploaded && <p>Uploaded successfully!</p>}
-    </>
+    </div >
   );
 };
 
